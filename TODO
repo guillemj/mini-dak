@@ -4,11 +4,9 @@ TODO
  * distribution split
  * files uplaoded size match
  * locking of actions
- * a script to manually obsolete packages
  * automatic obsoleting
  * support setup for different arches per dist
  * the code to move the files from incoming to unchecked should be split from
    verify_md5sum
- * split logs by month
  * support tag filters
 
