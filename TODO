@@ -1,9 +1,8 @@
 TODO
 ====
 
- * distribution split
  * udeb split
- * files uploaded size match
+ * check if size matches for files uploaded
  * locking of actions
  * automatic obsoleting
  * the code to move the files from incoming to unchecked should be split from
