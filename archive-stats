@@ -23,35 +23,8 @@
 
 # Main
 
-changes_uniq ()
-{
-  while read package arch version; do
-    if [ "$package" != "$g_package" ] || [ "$arch" != "$g_arch" ]; then
-      printf "%-20s %-20s %-20s\n" $g_package $g_arch $g_version
-      g_package=$package
-      g_version=$version
-      g_arch=$arch
-    else
-      if dpkg --compare-versions $version le $g_version; then
-        g_package=$package
-        g_version=$version
-        g_arch=$arch
-      fi
-    fi
-  done
-}
-
 echo "-> Doing archive statistics"
 
-find $pool_dir -name '*.changes' | (
-while read f_changes; do
-  dir=`dirname $f_changes`
-  changes=`basename ${f_changes%.changes}`
-  package=`echo $changes | cut -d_ -f1`
-  version=`echo $changes | cut -d_ -f2`
-  arch=`echo $changes | cut -d_ -f3`
-
-  printf "%-20s %-20s %-20s\n" $package $arch $version
-done
-) | sort | changes_uniq > $cache_dir/stats.list
+find $pool_dir -name '*.changes' | \
+	changes_canonic | sort | changes_uniq > $cache_dir/stats.list
 
