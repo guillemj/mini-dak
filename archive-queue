@@ -77,9 +77,10 @@ verify_suite ()
 {
   local changes=$1
   local target_suite=`fetch_field "Distribution" < $changes`
+  local c_target_suite=`canonic_suite $target_suite`
 
   for suite in $suite_list; do
-    if [ $suite = $target_suite ]; then
+    if [ "`canonic_suite $suite`" = "$c_target_suite" ]; then
       return 0
     fi
   done
