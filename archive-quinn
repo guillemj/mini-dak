@@ -85,8 +85,9 @@ for arch in $arch_list; do
     if [ $arch = hurd-i386 ]; then
       cat Packages-unstable.hurd-i386 >> Packages.$arch
     fi
-    sort_by_priority -A$arch -p Packages.$arch -i > $quinn_dir/quinn-$arch.prio
-    sort_by_section -A$arch -p Packages.$arch -i > $quinn_dir/quinn-$arch.sect
+    mkdir -p $quinn_dir/unstable
+    sort_by_priority -A$arch -p Packages.$arch -i > $quinn_dir/unstable/by_priority-$arch.txt
+    sort_by_section -A$arch -p Packages.$arch -i > $quinn_dir/usntable/by_section-$arch.txt
   fi
 done
 

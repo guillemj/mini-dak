@@ -101,6 +101,9 @@ create_repo ()
   mkdir -p $rejected_dir
   mkdir -p $byhand_dir
 
+  mkdir -p $quinn_dir
+  mkdir -p $log_dir
+
   if [ ! -d $pool_dir ]; then
     mkdir -p $pool_dir
   fi
