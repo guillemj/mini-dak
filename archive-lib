@@ -192,6 +192,14 @@ files_owner_perms ()
   chmod $archive_perms $files
 }
 
+dirs_owner_perms ()
+{
+  local dirs=$@
+
+  chown -f $archive_owner:$archive_group $dirs
+  chmod $archive_perms_dir $dirs
+}
+
 logpipe()
 {
   local name=$1
@@ -199,7 +207,7 @@ logpipe()
   local logfile=$log_monthly_dir/$name-`date -I`.log
 
   mkdir -p $log_monthly_dir
-  files_owner_perms $log_monthly_dir
+  dirs_owner_perms $log_monthly_dir
   tee -a $logfile
 }
 
