@@ -10,12 +10,6 @@
 
 # Canonicalize directories
 
-queue_dir=$archive_dir/$queue_dir
-pool_dir=$archive_dir/$pool_dir
-incoming_dir=$archive_dir/$incoming_dir
-indices_dir=$archive_dir/$indices_dir
-dists_dir=$archive_dir/$dists_dir
-
 accepted_dir=$queue_dir/accepted
 rejected_dir=$queue_dir/rejected
 unchecked_dir=$queue_dir/unchecked

@@ -23,6 +23,7 @@ create_apt_config ()
 
 	TreeDefault {
 	  Directory "pool/";
+	  SrcDirectory "pool/";
 	};
 HERE
 

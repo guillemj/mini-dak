@@ -37,7 +37,7 @@ verify_gpg_signature ()
 {
   local changes_signed=$1
   local changes=$2
-  local verify_result=`gpg --status-fd=2 --verify $changes_signed 2>&1`
+  local verify_result=`gpg $archive_keyrings --status-fd=2 --verify $changes_signed 2>&1`
 
   if wrong=`echo "$verify_result" | grep '^\[GNUPG:\] BADSIG '`; then
     return 1
@@ -106,8 +106,12 @@ queue_accepted ()
   local changes_signed=$1
   local changes=$2
   local files=`secure_files $changes`
+  local files_install="$files $changes_signed $changes"
 
-  if err=`mv $changes_signed $changes $files $accepted_dir` ; then
+  chmod 444 $files_install
+  chown 0:0 $files_install
+
+  if err=`mv $files_install $accepted_dir` ; then
     echo "mv_success"
     notice_accepted $changes_signed "$files"
     return 0
@@ -154,6 +158,7 @@ Reason: $outcome
 Archive Maintainer ($archive_maint)
 HERE
   echo mail -s "$changes_signed REJECTED" "$maintainer"
+  echo
 }
 
 
@@ -168,12 +173,14 @@ Hi $maintainer,
 
 Host: `hostname -f`
 Accepted: $changes_signed
- $files
+
+$files
 
 --
 Archive Maintainer ($archive_maint)
 HERE
   echo mail -s "$changes_signed ACCEPTED" "$maintainer"
+  echo
 }
 
 script_error ()
