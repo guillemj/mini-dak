@@ -21,6 +21,11 @@
 
 . archive-lib
 
-# Find and clean $incoming_dir $rejected_dir $unchecked_dir
+# Find old cruft and move it to rejected
 
+mkdir -p $rejected_daily_dir
+
+find $incoming_dir -mindepth 1 -ctime -7 | \
+  tee -a $log_dir/clean-`date -I`.log | \
+  xargs -n1 -i% mv "%" $rejected_daily_dir
 
