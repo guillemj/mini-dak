@@ -56,7 +56,8 @@ done
 echo_time "-> Moving new file lists into place..."
 for suite in $suite_list; do
   touch $cache_dir/files_${suite}_all.list.new
-  mv -f $cache_dir/files_${suite}_all.list
+  mv -f $cache_dir/files_${suite}_all.list.new \
+        $cache_dir/files_${suite}_all.list
 
   for arch in $(get_suite_arches $suite); do
     if [ $arch != source ]; then
@@ -81,4 +82,6 @@ for suite in $suite_list; do
     > $dists_dir/$suite/.Release
   mv -f $dists_dir/$suite/{.Release,Release}
 done
+
+echo_time "-> Done."
 
