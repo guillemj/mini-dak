@@ -1,7 +1,6 @@
 TODO
 ====
 
- * implement clean of incoming and queue/unchecked.
  * distribution split
  * files uplaoded size match
  * locking of actions
@@ -11,4 +10,5 @@ TODO
  * the code to move the files from incoming to unchecked should be split from
    verify_md5sum
  * split logs by month
+ * support tag filters
 
