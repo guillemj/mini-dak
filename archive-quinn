@@ -2,6 +2,7 @@
 #
 # $Id$
 #
+# Requires: wget bzip2 quinn-diff
 
 . archive-lib
 
