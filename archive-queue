@@ -239,7 +239,7 @@ for changes_file in *.changes; do
       continue
     fi
 
-    local signer=`fetch_field "Signed-By" < $archive_file`
+    signer=`fetch_field "Signed-By" < $archive_file`
 
     if ! verify_md5sums $archive_file; then
       queue_rejected "wrong-md5sums" $changes_file $archive_file "$signer"
