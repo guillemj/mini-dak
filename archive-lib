@@ -128,29 +128,35 @@ poolize_name()
 changes_canonic ()
 {
   while read f_changes; do
-    dir=`dirname $f_changes`
-    changes=`basename ${f_changes%.changes}`
-    package=`echo $changes | cut -d_ -f1`
-    version=`echo $changes | cut -d_ -f2`
-    arch=`echo $changes | cut -d_ -f3`
+    archive=`changes_strip < $f_changes`
+    package=`echo "$archive" | fetch_field "Source"`
+    version=`echo "$archive" | fetch_field "Version"`
+    suite=`echo "$archive" | fetch_field "Distribution"`
+    arches=`echo "$archive" | fetch_field "Architecture"`
 
-    printf "%-30s %-20s %s %s\n" $package $arch $version $f_changes
+    for arch in $arches; do
+      printf "%s %s %s %s %s\n" $package $suite $arch $version $f_changes
+    done
   done
 }
 
 changes_newest ()
 {
-  while read package arch version path; do
-    if [ "$package" != "$g_package" ] || [ "$arch" != "$g_arch" ]; then
-      printf "%-30s %-20s %s %s\n" $g_package $g_arch $g_version $g_path
+  while read package suite arch version path; do
+    if [ "$package" != "$g_package" ] ||
+       [ "$suite" != "$g_suite" ] ||
+       [ "$arch" != "$g_arch" ]; then
+      printf "%s %s %s %s %s\n" $g_package $g_suite $g_arch $g_version $g_path
       g_package=$package
       g_version=$version
+      g_suite=$suite
       g_arch=$arch
       g_path=$path
     else
       if dpkg --compare-versions $version le $g_version; then
         g_package=$package
         g_version=$version
+        g_suite=$suite
         g_arch=$arch
         g_path=$path
       fi
@@ -160,14 +166,17 @@ changes_newest ()
 
 changes_obsolete ()
 {
-  while read package arch version path; do
-    if [ "$package" = "$g_package" ] && [ "$arch" = "$g_arch" ]; then
+  while read package suite arch version path; do
+    if [ "$package" = "$g_package" ] &&
+       [ "$suite" = "$g_suite" ] &&
+       [ "$arch" = "$g_arch" ]; then
       if dpkg --compare-versions $g_version lt $version; then
-        printf "%-30s %-20s %s %s\n" $g_package $g_arch $g_version $g_path
+        printf "%s %s %s %s %s\n" $g_package $g_suite $g_arch $g_version $g_path
       fi
     fi
     g_package=$package
     g_version=$version
+    g_suite=$suite
     g_arch=$arch
     g_path=$path
   done
