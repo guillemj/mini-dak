@@ -35,7 +35,7 @@ echo_time "-> Regenerating .changes files list..."
 find $pool_dir -name '*.changes' | changes_canonic | \
   sort > $cache_dir/changes.list
 
-echo_time "-> Regenarating file lists..."
+echo_time "-> Regenerating file lists..."
 cat $cache_dir/changes.list | while read package suite arch version path; do
   archive_file=`changes_strip < $path`
   basepath=`dirname $path`
