@@ -89,6 +89,8 @@ create_repo ()
     done
   done
 
+  mkdir -p $cache_dir
+
   if [ ! -d $indices_dir ]; then
     mkdir -p $indices_dir
     touch $indices_dir/override
