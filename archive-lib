@@ -49,7 +49,7 @@ valid_arch ()
 {
   local v_arch=$1
 
-  for arch in $arch_list; do
+  for arch in $arch_list all; do
     if [ "$arch" = "$v_arch" ]; then
       return 0
     fi
