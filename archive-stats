@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# $Id$
+#
+
+. archive-lib
+
+# Main
+
+echo "-> Doing archive statistics"
+
+for f_changes in `find $pool_dir -name '*.changes'`; do
+  dir=`dirname $f_changes`
+  changes=`basename ${f_changes%.changes}`
+  package=`ehco $changes | cut -d_ -f1`
+  version=`echo $changes | cut -d_ -f2`
+  arch=`echo $changes | cut -d_ -f3`
+
+  printf "%-20s %-20s %-20s\n" $package $version $arch
+done
+
+cd -
+
