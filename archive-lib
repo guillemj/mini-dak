@@ -45,6 +45,19 @@ secure_files ()
   done
 }
 
+valid_arch ()
+{
+  local v_arch=$1
+
+  for arch in $arch_list; do
+    if [ "$arch" = "$v_arch" ]; then
+      return 0
+    fi
+  done
+
+  return 1
+}
+
 canonic_suite()
 {
   local code_name=$1
