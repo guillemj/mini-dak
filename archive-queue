@@ -218,6 +218,9 @@ cd $incoming_dir
 shopt -s nullglob
 
 for changes_file in *.changes; do
+
+  cd $incoming_dir
+
   if ! fuser $changes_file; then
     mv -f $changes_file $unchecked_dir/$changes_file
 
@@ -246,6 +249,8 @@ for changes_file in *.changes; do
       continue
     fi
 
+    cd $unchecked_dir
+
     if ! verify_suite $archive_file; then
       queue_rejected "wrong-suite" $changes_file $archive_file "$signer"
       continue
@@ -256,7 +261,7 @@ for changes_file in *.changes; do
       continue
     fi
 
-    ( cd $unchecked_dir; queue_accepted $changes_file $archive_file "$signer" )
+    queue_accepted $changes_file $archive_file "$signer"
   fi
 done
 
