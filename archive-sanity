@@ -35,7 +35,7 @@ if [ $FIX = yes ]; then
   echo " -> Regenerating missing .archive files"
   for changes in `find $pool_dir $accepted_dir -name '*.changes'`; do
     archive=${changes%changes}archive
-    strip_changes < $changes > $archive
+    changes_strip < $changes > $archive
   done
 fi
 

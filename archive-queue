@@ -60,7 +60,7 @@ verify_gpg_signature ()
     return 1
   elif good=`echo "$verify_result" | grep '^\[GNUPG:\] GOODSIG '`; then
     local signed_by="`echo "$good" | cut -d\  -f4-`"
-    strip_changes < $changes_signed \
+    changes_strip < $changes_signed \
       | formail -a"Signed-By: $signed_by" > $changes
     return 0
   else

@@ -141,7 +141,7 @@ changes_obsolete ()
   done
 }
 
-strip_changes ()
+changes_strip ()
 {
   awk  '
 BEGIN { block = 0; contents = 0 }
