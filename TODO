@@ -2,10 +2,13 @@ TODO
 ====
 
  * distribution split
- * files uplaoded size match
+ * udeb split
+ * Release file support
+ * files uploaded size match
  * locking of actions
  * automatic obsoleting
  * the code to move the files from incoming to unchecked should be split from
    verify_md5sum
- * support tag filters
+ * support tag filters || arch pool split?
+ * rewrite in perl?
 
