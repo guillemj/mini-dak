@@ -173,7 +173,7 @@ Host: `hostname -f`
 Rejected: $changes_signed
 Reason: $outcome
 HERE
-  ) | msg_mail "$changes_signed REJECTED" "$maintainer"
+  ) | msg_queue "$changes_signed REJECTED" "$maintainer"
 }
 
 
@@ -190,13 +190,13 @@ Accepted: $changes_signed
 Files:
 $files
 HERE
-  ) | msg_mail "$changes_signed ACCEPTED" "$maintainer"
+  ) | msg_queue "$changes_signed ACCEPTED" "$maintainer"
 }
 
 script_error ()
 {
-  # FIXME: message should be nicer than that
-  echo "$@" | log_queue mail -s "Error in `basename $0`" $archive_maint
+  # echo "$@" | mail -s "Error in `basename $0` ($1): $2" $archive_maint
+  log_queue "Error in `basename $0` ($1): $2"
 }
 
 #

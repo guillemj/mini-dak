@@ -178,7 +178,7 @@ log_queue ()
   echo "$@" | tee -a $log_dir/queue-`date -I`.log
 }
 
-msg_mail ()
+msg_queue ()
 {
   local subject=$1
   local recipient=$2
