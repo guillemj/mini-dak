@@ -80,14 +80,14 @@ bunzip2 -c Packages-unstable.hurd-i386.bz2 > Packages-unstable.hurd-i386
 echo " -> Collecting Packages files"
 for arch in $arch_list; do
   if [ $arch != source ]; then
-    echo "  -> Architectrure: $arch"
+    echo "  -> Architecture: $arch"
     cat $dists_dir/unreleased/main/binary-$arch/Packages > Packages.$arch
     if [ $arch = hurd-i386 ]; then
       cat Packages-unstable.hurd-i386 >> Packages.$arch
     fi
     mkdir -p $quinn_dir/unstable
     sort_by_priority -A$arch -p Packages.$arch -i > $quinn_dir/unstable/by_priority-$arch.txt
-    sort_by_section -A$arch -p Packages.$arch -i > $quinn_dir/usntable/by_section-$arch.txt
+    sort_by_section -A$arch -p Packages.$arch -i > $quinn_dir/unstable/by_section-$arch.txt
   fi
 done
 
