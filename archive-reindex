@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# archive-index script
+#
+# Requires: apt-utils
+
+# Import library
+
+. archive-lib
+
+#
+# Main
+#
+
+echo "-> Regenarating file lists..."
+for arch in $arch_list; do
+  if [ $arch != source ]; then
+    echo " -> Listing $arch debs"
+    find $pool_dir -name "*_$arch.deb" > $cache_dir/files_$arch.list
+  fi
+done
+
+echo "-> Regenerating indexes..."
+apt-ftparchive generate $apt_config
+

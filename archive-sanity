@@ -1,0 +1,14 @@
+#!/bin/bash
+
+. archive-lib
+
+# Main
+
+echo "-> Doing sanity check over the archive"
+
+echo " -> Regenerating missing .archive files"
+for changes in `find $pool_dir -name '*.changes'`; do
+  archive=${changes%changes}archive
+  strip_changes < $changes > $archive
+done
+

@@ -12,29 +12,31 @@ create_apt_config ()
 {
   cat > $apt_config <<-HERE
 	Default {
-	  Packages::Compress ". gzip bzip2";
-	  Sources::Compress ". gzip bzip2";
+	  Packages::Compress	". gzip bzip2";
+	  Sources::Compress	". gzip bzip2";
 	};
 
 	Dir {
-	  ArchiveDir	"$archive_dir";
-	  OverrideDir	"$indices_dir";
+	  ArchiveDir		"$archive_dir";
+	  OverrideDir		"$indices_dir";
+	  CacheDir		"$cache_dir";
 	};
 
 	TreeDefault {
-	  Directory "pool/";
-	  SrcDirectory "pool/";
+	  FileList		"$cache_dir/files_\$(ARCH).list";
+	  Directory		"pool/";
+	  SrcDirectory		"pool/";
 	};
+	
 HERE
 
   for suite in $suite_list; do
     cat >> $apt_config <<-HERE
-	
 	Tree "dists/$suite" {
 	  Sections		"$section_list";
 	  Architectures		"$arch_list";
-	  BinCacheDb		"$suite.db";
 	};
+
 HERE
   done
 }

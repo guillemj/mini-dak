@@ -1,0 +1,60 @@
+#!/bin/bash
+
+. archive-lib
+
+sort_by_priority()
+{
+  local tmpfile=$(mktemp /tmp/$(basename $0).XXXXXX)
+  trap 'rm -f $tmpfile ; exit 1' 1 2 3 13 15
+
+  quinn-diff "$@" > $tmpfile 2> /dev/null
+
+  egrep "\[required\:" $tmpfile | sort
+  egrep "\[important\:" $tmpfile | sort
+  egrep "\[standard\:" $tmpfile | sort
+  egrep "\[optional\:" $tmpfile | sort
+  egrep "\[extra\:" $tmpfile | sort
+  egrep -v "\[extra\:|\[optional\:|\[standard\:|\[important\:|\[required\:" $tmpfile | sort
+
+  rm -f $tmpfile
+}
+
+sort_by_section()
+{
+  local tmpfile=$(mktemp /tmp/$(basename $0).XXXXXX)
+  trap 'rm -f $tmpfile ; exit 1' 1 2 3 13 15
+
+  quinn-diff "$@" > $tmpfile 2> /dev/null
+
+  local sections="base admin comm devel doc editors electronics embedded games gnome graphics hamradio interpreters kde libs libdevel mail math misc net news oldlibs otherosfs perl python shells sound tex text utils web x11"
+
+  for i in $sections; do
+    egrep "$i\/.*\[required\:" $tmpfile | sort
+    egrep "$i\/.*\[important\:" $tmpfile | sort
+    egrep "$i\/.*\[standard\:" $tmpfile | sort
+    egrep "$i\/.*\[optional\:" $tmpfile | sort
+    egrep "$i\/.*\[extra\:" $tmpfile | sort
+  done
+  egrep -v "\[extra\:|\[optional\:|\[standard\:|\[important\:|\[required\:" $tmpfile | sort
+
+  rm -f $tmpfile
+}
+
+cd $quinn_dir
+
+echo "-> Generating Quinn-Diff stats"
+
+echo " -> Collecting Sources files"
+wget -N http://jane.uab.es/debian/dists/unstable/main/source/Sources.bz2
+bunzip2 -c Sources.bz2 > Sources
+
+echo " -> Collecting Packages files"
+for arch in $arch_list; do
+  if [ $arch != source ]; then
+    echo "  -> Architectrure: $arch"
+    cat $dists_dir/unreleased/main/binary-$arch/Packages > Packages.$arch
+    sort_by_priority -A$arch -p Packages.$arch -i > quinn-$arch.prio
+    sort_by_section -A$arch -p Packages.$arch -i > quinn-$arch.sect
+  fi
+done
+

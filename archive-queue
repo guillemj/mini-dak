@@ -37,12 +37,14 @@ verify_gpg_signature ()
 {
   local changes_signed=$1
   local changes=$2
-  local verify_result=`gpg $archive_keyrings --status-fd=2 --verify $changes_signed 2>&1`
+  local verify_result=`gpg $archive_keyrings --no-tty --status-fd=2 --verify $changes_signed 2>&1`
 
   if wrong=`echo "$verify_result" | grep '^\[GNUPG:\] BADSIG '`; then
     return 1
   elif good=`echo "$verify_result" | grep '^\[GNUPG:\] GOODSIG '`; then
     strip_changes < $changes_signed > $changes
+    local signed_by=`echo $good | cut -d\  -f4-`
+    echo "Signed-By: $signed_by" >> $changes
     return 0
   else
     return 1
@@ -74,7 +76,7 @@ verify_md5sums ()
 verify_suite ()
 {
   local changes=$1
-  local target_suite=`fetch_distribution < $changes`
+  local target_suite=`fetch_field "Distribution" < $changes`
 
   for suite in $suite_list; do
     if [ $suite = $target_suite ]; then
@@ -85,18 +87,18 @@ verify_suite ()
   return 1
 }
 
-
-# .changes managment functions
-
-strip_changes ()
+verify_arch ()
 {
-  awk  '
-BEGIN { block = 0; contents = 0 }
-/^-----BEGIN PGP SIGNATURE/ { exit }
-block && contents { print }
-/^-----BEGIN PGP SIGNED/ { block = 1 }
-block && /^ *$/ { contents = 1 }
-'
+  local changes=$1
+  local target_arches=`fetch_field "Architecture" < $changes`
+
+  for arch in $arch_list; do
+    if [ $arch = $target_arches ]; then
+      return 0
+    fi
+  done
+
+  return 1
 }
 
 # file output
@@ -108,12 +110,13 @@ queue_accepted ()
   local files=`secure_files $changes`
   local files_install="$files $changes_signed $changes"
 
-  chmod 444 $files_install
-  chown 0:0 $files_install
+  chmod $archive_perms $files_install
+  chown $archive_owner:$archive_group $files_install
 
   if err=`mv $files_install $accepted_dir` ; then
+    local signer=`fetch_field "Signed-By" < $changes`
     echo "mv_success"
-    notice_accepted $changes_signed "$files"
+    notice_accepted $changes_signed "$files" "$signer" 
     return 0
   else
     script_error "queue_accepted" "$err"
@@ -148,8 +151,7 @@ notice_rejected ()
   local maintainer=$3
 
   cat <<-HERE
-Hi $maintainer,
-
+Uploader: $maintainer
 Host: `hostname -f`
 Rejected: $changes_signed
 Reason: $outcome
@@ -169,8 +171,7 @@ notice_accepted ()
   local maintainer=$3
 
   cat <<-HERE
-Hi $maintainer,
-
+Uploader: $maintainer
 Host: `hostname -f`
 Accepted: $changes_signed
 

@@ -18,19 +18,11 @@ byhand_dir=$queue_dir/byhand
 ######
 # file input functions
 
-fetch_maintainer ()
+fetch_field ()
 {
-  formail -xMaintainer:
-}
-
-fetch_source_package ()
-{
-  formail -xSource:
-}
-
-fetch_distribution ()
-{
-  formail -xDistribution:
+  local field=$1
+  
+  formail -x$field:
 }
 
 fetch_files ()
@@ -51,5 +43,18 @@ secure_files ()
   for file in $files; do
     echo $(basename `readlink -f $file`)
   done
+}
+
+# .changes managment functions
+
+strip_changes ()
+{
+  awk  '
+BEGIN { block = 0; contents = 0 }
+/^-----BEGIN PGP SIGNATURE/ { exit }
+block && contents { print }
+/^-----BEGIN PGP SIGNED/ { block = 1 }
+block && /^ *$/ { contents = 1 }
+'
 }
 

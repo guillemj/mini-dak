@@ -1,0 +1,66 @@
+#! /bin/sh
+
+# Script to sort quinn diff output by riority, split into sections of
+#                                          uncompiled and out of date.
+# Copyright (C) 1997, 1998 James Troup <james@nocrew.org>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+set -e
+
+tmpfile=$(mktemp /tmp/$(basename $0).XXXXXX)
+tmpfile_a=$(mktemp /tmp/$(basename $0).XXXXXX)
+tmpfile_b=$(mktemp /tmp/$(basename $0).XXXXXX)
+
+trap 'rm -f $tmpfile $tmpfile_a $tmpfile_b ; exit 1' 1 2 3 13 15
+
+quinn-diff > $tmpfile
+
+ARCH=m68k
+# If a Packages-secondary already exists use the architecture from that as a default
+if [ -f Packages-secondary ]; then
+  ARCH=$(grep "^Arch" Packages-secondary | sort | uniq | grep -v "all" | \
+		 head -n 1 | sed -e "s/Architecture: //");
+elif [ ! "$1" = "" ]; then
+  ARCH="$1"
+fi
+
+echo "The following have not been compiled on "$ARCH":"
+echo "----------------------------------------------"
+
+grep ":uncompiled" $tmpfile > $tmpfile_b
+sed -e "s/:uncompiled//" < $tmpfile_b > $tmpfile_a
+egrep "\[required" $tmpfile_a | sort
+egrep "\[important" $tmpfile_a | sort
+egrep "\[standard" $tmpfile_a | sort
+egrep "\[optional" $tmpfile_a | sort
+egrep "\[extra" $tmpfile_a | sort
+egrep -v "\[extra|\[optional|\[standard|\[important|\[required" $tmpfile_a | sort
+rm -f $tmpfile_a
+
+echo
+echo "The following are out of date on "$ARCH":"
+echo "----------------------------------------"
+
+grep -v ":uncompiled" $tmpfile > $tmpfile_b
+sed -e "s/:out-of-date//" < $tmpfile_b > $tmpfile_a
+egrep "\[required" $tmpfile_a | sort
+egrep "\[important" $tmpfile_a | sort
+egrep "\[standard" $tmpfile_a | sort
+egrep "\[optional" $tmpfile_a | sort
+egrep "\[extra" $tmpfile_a | sort
+egrep -v "\[extra|\[optional|\[standard|\[important|\[required" $tmpfile_a | sort
+
+rm -f $tmpfile $tmpfile_a $tmpfile_b
