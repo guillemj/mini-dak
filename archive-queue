@@ -111,8 +111,7 @@ queue_accepted ()
   local files_install="$files $changes_signed $changes"
   local signer=`fetch_field "Signed-By" < $changes`
 
-  chmod $archive_perms $files_install
-  chown $archive_owner:$archive_group $files_install
+  files_owner_perms $files_install
 
   if err=`mv $files_install $accepted_dir` ; then
     log_queue "mv_success ${changes##*/}"

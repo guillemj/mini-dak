@@ -58,6 +58,13 @@ block && /^ *$/ { contents = 1 }
 '
 }
 
+files_owner_perms ()
+{
+  local files=$@
+
+  chown $archive_owner:$archive_group $files
+  chmod $archive_perms $files
+}
 
 log_install ()
 {

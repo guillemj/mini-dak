@@ -57,6 +57,15 @@ create_repo ()
           path_dir=$dists_dir/$suite/$section/binary-$arch
         fi
         mkdir -p $path_dir
+        cat > $path_dir/Release <<-HERE
+		Archive: $archive_name
+		Version: $archive_version
+		Component: $suite/$section
+		Origin: $archive_url
+		Label: $archive_url
+		Architecture: $arch
+	HERE
+        files_owner_perms $path_dir/Release
       done
     done
   done

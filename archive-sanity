@@ -20,6 +20,10 @@ if [ $FIX = yes ]; then
   done
 fi
 
+cd $pool_dir
+
+cd -
+
 cd $cache_dir
 
 echo " -> Finding duped packages"
