@@ -71,7 +71,7 @@ verify_gpg_signature ()
 verify_md5sums ()
 {
   local changes=$1
-  local files=`secure_files $changes`
+  local files=`fetch_secure_files $changes`
 
   if err=`mv $files $unchecked_dir` ; then
     log_queue "mv_uncehecked_success ${changes##*/}"
@@ -125,7 +125,7 @@ queue_accepted ()
 {
   local changes_signed=$1
   local changes=$2
-  local files=`secure_files $changes`
+  local files=`fetch_secure_files $changes`
   local files_install="$files $changes_signed $changes"
   local signer=`fetch_field "Signed-By" < $changes`
 

@@ -54,7 +54,7 @@ fetch_md5sums ()
   formail -xFiles: | cut -d' ' -f2,6 | sed -e 's/ /  /'
 }
 
-secure_files ()
+fetch_secure_files ()
 {
   local changes=$1
   local files=`fetch_files < $changes`
