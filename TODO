@@ -3,7 +3,6 @@ TODO
 
  * distribution split
  * udeb split
- * Release file support
  * files uploaded size match
  * locking of actions
  * automatic obsoleting

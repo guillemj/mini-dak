@@ -36,6 +36,13 @@ create_apt_config ()
 	  Sources::Compress	". gzip bzip2";
 	};
 
+	APT::FTPArchive::Release {
+	  Archive		"$archive_name";
+	  Version		"$archive_version";
+	  Origin		"$archive_url";
+	  Label			"$archive_url";
+	}
+
 	Dir {
 	  ArchiveDir		"$archive_dir";
 	  OverrideDir		"$indices_dir";
