@@ -48,7 +48,7 @@ shopt -s nullglob
 
 for archive in *.archive; do
     changes=`basename $archive archive`changes
-    package=$(echo `fetch_field "Source" < $archive`)
+    package=`fetch_field "Source" < $archive`
     section=main
     hash_dir=`echo $package | \
       sed -e 's/^\(lib.\).*$/\1/;/^lib/q;s/^\(.\).*$/\1/'`
