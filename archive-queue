@@ -132,12 +132,12 @@ queue_accepted ()
   files_owner_perms $files_install
 
   if err=`mv $files_install $accepted_dir` ; then
-    log_queue "mv_success ${changes##*/}"
+    log_queue "mv_accepted_success ${changes##*/}"
     notice_accepted $changes_signed "$files" "$signer"
     return 0
   else
     script_error "queue_accepted" "$err"
-    log_queue "mv_failed ${changes##*/}"
+    log_queue "mv_accepted_failed ${changes##*/}"
     return 1
   fi
 }
@@ -149,12 +149,12 @@ queue_rejected ()
   local maintainer=$3
 
   if err=`mv $changes_signed $rejected_dir` ; then
-    log_queue "mv_success ${changes##*/}"
+    log_queue "mv_rejected_success ${changes##*/}"
     notice_rejected $changes_signed "$outcome"
     return 0
   else
     script_error "queue_rejected" "$err"
-    log_queue "mv_failed ${changes##*/}"
+    log_queue "mv_rejected_failed ${changes##*/}"
     return 1
   fi
 }
