@@ -23,8 +23,6 @@
 
 . archive-lib
 
-obsolete_dir=$archive_dir/obsolete
-
 echo "-> Obsoleting packages:"
 
 shopt -s nullglob

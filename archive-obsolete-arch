@@ -30,7 +30,6 @@
 target_arch=$1
 
 dir=$dists_dir/unstable/main
-obsolete_dir=$archive_dir/obsolete
 target_arch_dir=$obsolete_dir/$target_arch
 
 echo "-> Obsoleting arch: $target_arch"
