@@ -3,6 +3,7 @@ TODO
 
  * automatic obsoleting
  * udeb split
+ * optimize archive-reindex speed (find and parse .changes)
  * check if size matches for files uploaded
  * locking of actions
  * the code to move the files from incoming to unchecked should be split from
