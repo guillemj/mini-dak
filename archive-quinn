@@ -2,6 +2,9 @@
 #
 # $Id$
 #
+# Functions sort_by_priority and sort_by_section ripped from quinn-diff
+# package's example scripts.
+#
 # Requires: wget bzip2 quinn-diff
 
 . archive-lib
