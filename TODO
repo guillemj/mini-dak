@@ -1,10 +1,10 @@
 TODO
 ====
 
+ * automatic obsoleting
  * udeb split
  * check if size matches for files uploaded
  * locking of actions
- * automatic obsoleting
  * the code to move the files from incoming to unchecked should be split from
    verify_md5sum
  * support tag filters || arch pool split?
