@@ -27,6 +27,8 @@ LANG=C
 
 obsolete_dir=$archive_dir/obsolete
 
-cat $cache_dir/changes.list | changes_newest > $cache_dir/ch_new.list
-# cat $cache_dir/changes.list | changes_obsolete
+cd $cache_dir
+
+cat changes.list | changes_newest > ch_new.list
+sort changes.list ch_new.list | sort | uniq -u > ch_obs.list
 
