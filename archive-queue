@@ -74,7 +74,7 @@ verify_md5sums ()
   local files=`fetch_secure_files $archive_file`
 
   if err=`mv $files $unchecked_dir` ; then
-    log_queue "mv_unchecked_success ${archive_file##*/}"
+    log queue "mv_unchecked_success ${archive_file##*/}"
 
     if fetch_md5sums < $archive_file | \
        ( cd $unchecked_dir; md5sum.textutils -c >& /dev/null ); then
@@ -84,7 +84,7 @@ verify_md5sums ()
     fi
   else
     script_error "verify_md5sums" "$err"
-    log_queue "mv_unchecked_failed ${archive_file##*/}"
+    log queue "mv_unchecked_failed ${archive_file##*/}"
     return 1
   fi
 
@@ -132,12 +132,12 @@ queue_accepted ()
   files_owner_perms $files_install
 
   if err=`mv $files_install $accepted_dir` ; then
-    log_queue "mv_accepted_success ${archive_file##*/}"
+    log queue "mv_accepted_success ${archive_file##*/}"
     notice_accepted $changes_file "$files" "$signer"
     return 0
   else
     script_error "queue_accepted" "$err"
-    log_queue "mv_accepted_failed ${archive_file##*/}"
+    log queue "mv_accepted_failed ${archive_file##*/}"
     return 1
   fi
 }
@@ -159,12 +159,12 @@ queue_rejected ()
   fi
 
   if err=`mv $files $rejected_daily_dir` ; then
-    log_queue "mv_rejected_success ${archive_file##*/}"
+    log queue "mv_rejected_success ${archive_file##*/}"
     notice_rejected $changes_file "$outcome" "$signer"
     return 0
   else
     script_error "queue_rejected" "$err"
-    log_queue "mv_rejected_failed ${archive_file##*/}"
+    log queue "mv_rejected_failed ${archive_file##*/}"
     return 1
   fi
 }
@@ -206,7 +206,7 @@ HERE
 script_error ()
 {
   # echo "$@" | mail -s "Error in `basename $0` ($1): $2" $archive_maint
-  log_queue "Error in `basename $0` ($1): $2"
+  log queue "Error in `basename $0` ($1): $2"
 }
 
 #

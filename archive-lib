@@ -169,14 +169,22 @@ files_owner_perms ()
   chmod $archive_perms $files
 }
 
-log_install ()
+logpipe()
 {
-  echo "$@" | tee -a $log_dir/install-`date -I`.log
+  local name=$1
+  local log_monthly_dir=$log_dir/`date +%Y`/`date +%m`
+  local logfile=$log_monthly_dir/$name-`date -I`.log
+
+  mkdir -p $log_monthly_dir
+  tee -a $logfile
 }
 
-log_queue ()
+log()
 {
-  echo "$@" | tee -a $log_dir/queue-`date -I`.log
+  local name=$1
+
+  shift
+  echo -e "$@" | logpipe "$name"
 }
 
 msg_queue ()
@@ -188,7 +196,7 @@ msg_queue ()
     cat
     echo "$subject"
     echo
-  ) | tee -a $log_dir/queue-`date -I`.log
+  ) | logpipe queue
 
   if [ "$MAIL_REPORT" = "yes" ]; then
     (

@@ -40,11 +40,11 @@ pool_install ()
   fi
 
   if err=`mv $files $dest_dir` ; then
-    log_install "install_success $changes"
+    log install "install_success $changes"
     return 0
   else
     script_error "$err"
-    log_install "install_failed $changes"
+    log install "install_failed $changes"
     return 1
   fi
 }
@@ -54,7 +54,7 @@ pool_install ()
 script_error ()
 {
   # FIXME: message should be nicer than that
-  log_install "$1" | echo mail -s "Error in `basename $0`" $archive_maint
+  log install "$1" | echo mail -s "Error in `basename $0`" $archive_maint
 }
 
 #

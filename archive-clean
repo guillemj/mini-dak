@@ -26,6 +26,6 @@
 mkdir -p $rejected_daily_dir
 
 find $incoming_dir -mindepth 1 -ctime -7 | \
-  tee -a $log_dir/clean-`date -I`.log | \
+  logpipe clean | \
   xargs -n1 -i% mv "%" $rejected_daily_dir
 
