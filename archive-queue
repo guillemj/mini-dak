@@ -29,7 +29,7 @@
 
 verify_symlink_attack ()
 {
-  changes_signed=$1
+  changes_file=$1
 
   if [ -L $changes_file ]; then
     return 1
@@ -40,8 +40,8 @@ verify_symlink_attack ()
 
 verify_size ()
 {
-  local changes_signed=$1
-  local changes_size=`stat -c "%s" $changes_signed`
+  local changes_file=$1
+  local changes_size=`stat -c "%s" $changes_file`
 
   if [ $changes_size -gt 100000 ]; then
     return 1
@@ -52,16 +52,16 @@ verify_size ()
 
 verify_gpg_signature ()
 {
-  local changes_signed=$1
-  local changes=$2
-  local verify_result="`gpg $archive_keyrings --no-tty --status-fd=2 --verify $changes_signed 2>&1`"
+  local changes_file=$1
+  local archive_file=$2
+  local verify_result="`gpg $archive_keyrings --no-tty --status-fd=2 --verify $changes_file 2>&1`"
 
   if wrong=`echo "$verify_result" | grep '^\[GNUPG:\] BADSIG '`; then
     return 1
   elif good=`echo "$verify_result" | grep '^\[GNUPG:\] GOODSIG '`; then
     local signed_by="`echo "$good" | cut -d\  -f4-`"
-    changes_strip < $changes_signed \
-      | formail -a"Signed-By: $signed_by" > $changes
+    changes_strip < $changes_file \
+      | formail -a"Signed-By: $signed_by" > $archive_file
     return 0
   else
     return 1
@@ -70,13 +70,13 @@ verify_gpg_signature ()
 
 verify_md5sums ()
 {
-  local changes=$1
-  local files=`fetch_secure_files $changes`
+  local archive_file=$1
+  local files=`fetch_secure_files $archive_file`
 
   if err=`mv $files $unchecked_dir` ; then
-    log_queue "mv_unchecked_success ${changes##*/}"
+    log_queue "mv_unchecked_success ${archive_file##*/}"
 
-    if fetch_md5sums < $changes | \
+    if fetch_md5sums < $archive_file | \
        ( cd $unchecked_dir; md5sum.textutils -c >& /dev/null ); then
       return 0
     else
@@ -84,7 +84,7 @@ verify_md5sums ()
     fi
   else
     script_error "verify_md5sums" "$err"
-    log_queue "mv_unchecked_failed ${changes##*/}"
+    log_queue "mv_unchecked_failed ${archive_file##*/}"
     return 1
   fi
 
@@ -92,8 +92,8 @@ verify_md5sums ()
 
 verify_suite ()
 {
-  local changes=$1
-  local target_suite=`fetch_field "Distribution" < $changes`
+  local archive_file=$1
+  local target_suite=`fetch_field "Distribution" < $archive_file`
   local c_target_suite=`canonic_suite $target_suite`
 
   for suite in $suite_list; do
@@ -107,8 +107,8 @@ verify_suite ()
 
 verify_arch ()
 {
-  local changes=$1
-  local target_arches=`fetch_field "Architecture" < $changes`
+  local archive_file=$1
+  local target_arches=`fetch_field "Architecture" < $archive_file`
 
   for arch in $target_arches; do
     if ! valid_arch $arch; then
@@ -123,40 +123,48 @@ verify_arch ()
 
 queue_accepted ()
 {
-  local changes_signed=$1
-  local changes=$2
-  local files=`fetch_secure_files $changes`
-  local files_install="$files $changes_signed $changes"
-  local signer=`fetch_field "Signed-By" < $changes`
+  local changes_file=$1
+  local archive_file=$2
+  local signer=$3
+  local files=`fetch_secure_files $archive_file`
+  local files_install="$files $changes_file $archive_file"
 
   files_owner_perms $files_install
 
   if err=`mv $files_install $accepted_dir` ; then
-    log_queue "mv_accepted_success ${changes##*/}"
-    notice_accepted $changes_signed "$files" "$signer"
+    log_queue "mv_accepted_success ${archive_file##*/}"
+    notice_accepted $changes_file "$files" "$signer"
     return 0
   else
     script_error "queue_accepted" "$err"
-    log_queue "mv_accepted_failed ${changes##*/}"
+    log_queue "mv_accepted_failed ${archive_file##*/}"
     return 1
   fi
 }
 
 queue_rejected ()
 {
-  local changes_signed=$1
-  local outcome=$2
-  local maintainer=$3
+  local outcome=$1
+  local changes_file=$2
+  local archive_file=$3
+  local signer=$4
+  local files=
 
   mkdir -p $rejected_dir
 
-  if err=`mv $changes_signed $rejected_dir` ; then
-    log_queue "mv_rejected_success ${changes##*/}"
-    notice_rejected $changes_signed "$outcome"
+  if [ "$signer" ]; then
+    files="`fetch_secure_files $archive_file` $changes_file $archive_file"
+  else
+    files=$changes_file
+  fi
+
+  if err=`mv $files $rejected_dir` ; then
+    log_queue "mv_rejected_success ${archive_file##*/}"
+    notice_rejected $changes_file "$outcome" "$signer"
     return 0
   else
     script_error "queue_rejected" "$err"
-    log_queue "mv_rejected_failed ${changes##*/}"
+    log_queue "mv_rejected_failed ${archive_file##*/}"
     return 1
   fi
 }
@@ -165,34 +173,34 @@ queue_rejected ()
 
 notice_rejected ()
 {
-  local changes_signed=${1##*/}
+  local changes_file=${1##*/}
   local outcome=$2
-  local maintainer=$3
+  local signer=$3
 
   ( cat <<-HERE
-Uploader: $maintainer
+Uploader: $signer
 Host: `hostname -f`
-Rejected: $changes_signed
+Rejected: $changes_file
 Reason: $outcome
 HERE
-  ) | msg_queue "$changes_signed REJECTED" "$maintainer"
+  ) | msg_queue "$changes_file REJECTED" "$signer"
 }
 
 
 notice_accepted ()
 {
-  local changes_signed=${1##*/}
+  local changes_file=${1##*/}
   local files=$2
-  local maintainer=$3
+  local signer=$3
 
   ( cat <<-HERE
-Uploader: $maintainer
+Uploader: $signer
 Host: `hostname -f`
-Accepted: $changes_signed
+Accepted: $changes_file
 Files:
 $files
 HERE
-  ) | msg_queue "$changes_signed ACCEPTED" "$maintainer"
+  ) | msg_queue "$changes_file ACCEPTED" "$signer"
 }
 
 script_error ()
@@ -211,26 +219,44 @@ shopt -s nullglob
 
 for changes_file in *.changes; do
   if ! fuser $changes_file; then
-    changes_signed=$unchecked_dir/$changes_file
-    changes=$unchecked_dir/$(basename $changes_file changes)archive
+    mv -f $changes_file $unchecked_dir/$changes_file
 
-    mv -f $changes_file $changes_signed
+    changes_file=$unchecked_dir/$changes_file
+    archive_file=$unchecked_dir/$(basename $changes_file changes)archive
 
-    if ! verify_symlink_attack $changes_signed; then
-      queue_rejected $changes_signed "error-symlink-attack"
-    elif ! verify_size $changes_signed; then
-      queue_rejected $changes_signed "toobig-changes-file"
-    elif ! verify_gpg_signature $changes_signed $changes; then
-      queue_rejected $changes_signed "wrong-signature"
-    elif ! verify_md5sums $changes; then
-      queue_rejected $changes_signed "wrong-md5sums"
-    elif ! verify_suite $changes; then
-      queue_rejected $changes_signed "wrong-suite"
-    elif ! verify_arch $changes; then
-      queue_rejected $changes_signed "wrong-arch"
-    else
-      ( cd $unchecked_dir; queue_accepted $changes_signed $changes )
+    if ! verify_symlink_attack $changes_file; then
+      queue_rejected "error-symlink-attack" $changes_file
+      continue
     fi
+
+    if ! verify_size $changes_file; then
+      queue_rejected "toobig-changes-file" $changes_file
+      continue
+    fi
+
+    if ! verify_gpg_signature $changes_file $archive_file; then
+      queue_rejected "wrong-signature" $changes_file
+      continue
+    fi
+
+    local signer=`fetch_field "Signed-By" < $archive_file`
+
+    if ! verify_md5sums $archive_file; then
+      queue_rejected "wrong-md5sums" $changes_file $archive_file "$signer"
+      continue
+    fi
+
+    if ! verify_suite $archive_file; then
+      queue_rejected "wrong-suite" $changes_file $archive_file "$signer"
+      continue
+    fi
+
+    if ! verify_arch $archive_file; then
+      queue_rejected "wrong-arch" $changes_file $archive_file "$signer"
+      continue
+    fi
+
+    ( cd $unchecked_dir; queue_accepted $changes_file $archive_file "$signer" )
   fi
 done
 
