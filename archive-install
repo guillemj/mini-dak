@@ -67,7 +67,7 @@ shopt -s nullglob
 
 for archive_file in *.archive; do
     changes_file=`basename $archive_file archive`changes
-    dest_dir=`poolize_name $archive_file`
+    dest_dir=`poolize_archive_file $archive_file`
     files=`fetch_files < $archive_file`
 
     pool_install "$changes_file" "$files" "$dest_dir"
