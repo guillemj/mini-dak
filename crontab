@@ -1,0 +1,14 @@
+# /etc/cron.d/mini-dak: crontab fragment for mini-dak
+#
+# $Id$
+#
+
+BIN=/srv/ftp.gnuab.org/bin
+MAILTO=ftpmaster
+
+# Run queue every 15 minutes
+0-59/15 * * * * root cd $BIN; ./archive-queue
+
+# Run install every 6 hours
+0 0-23/6 * * * ftpmaster cd $BIN; ./archive-install
+
