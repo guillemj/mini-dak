@@ -1,0 +1,217 @@
+#!/bin/bash
+#
+# archive-queue script
+#
+
+# Import library
+
+. archive-lib
+
+######
+# data validation functions
+
+verify_symlink_attack ()
+{
+  changes_signed=$1
+
+  if [ -L $changes_file ]; then
+    return 1
+  else
+    return 0
+  fi
+}
+
+verify_size ()
+{
+  local changes_signed=$1
+  local changes_size=`stat -c "%s" $changes_signed`
+
+  if [ $changes_size -gt 100000 ]; then
+    return 1
+  else
+    return 0
+  fi
+}
+
+verify_gpg_signature ()
+{
+  local changes_signed=$1
+  local changes=$2
+  local verify_result=`gpg --status-fd=2 --verify $changes_signed 2>&1`
+
+  if wrong=`echo "$verify_result" | grep '^\[GNUPG:\] BADSIG '`; then
+    return 1
+  elif good=`echo "$verify_result" | grep '^\[GNUPG:\] GOODSIG '`; then
+    strip_changes < $changes_signed > $changes
+    return 0
+  else
+    return 1
+  fi
+}
+
+verify_md5sums ()
+{
+  local changes=$1
+  local files=`secure_files $changes`
+
+  if err=`mv $files $unchecked_dir` ; then
+    echo "mv_unechekced_success"
+
+    if fetch_md5sums < $changes | \
+       ( cd $unchecked_dir; md5sum.textutils -c >& /dev/null ); then
+      return 0
+    else
+      return 1
+    fi
+  else
+    script_error "verify_md5sums" "$err"
+    echo "mv_unchecked_failed"
+    return 1
+  fi
+
+}
+
+verify_suite ()
+{
+  local changes=$1
+  local target_suite=`fetch_distribution < $changes`
+
+  for suite in $suite_list; do
+    if [ $suite = $target_suite ]; then
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+
+# .changes managment functions
+
+strip_changes ()
+{
+  awk  '
+BEGIN { block = 0; contents = 0 }
+/^-----BEGIN PGP SIGNATURE/ { exit }
+block && contents { print }
+/^-----BEGIN PGP SIGNED/ { block = 1 }
+block && /^ *$/ { contents = 1 }
+'
+}
+
+# file output
+
+queue_accepted ()
+{
+  local changes_signed=$1
+  local changes=$2
+  local files=`secure_files $changes`
+
+  if err=`mv $changes_signed $changes $files $accepted_dir` ; then
+    echo "mv_success"
+    notice_accepted $changes_signed "$files"
+    return 0
+  else
+    script_error "queue_accepted" "$err"
+    echo "mv_failed"
+    return 1
+  fi
+}
+
+queue_rejected ()
+{
+  local changes_signed=$1
+  local outcome=$2
+  local maintainer=$3
+
+  if err=`mv $changes_signed $rejected_dir` ; then
+    echo "mv_success"
+    notice_rejected $changes_signed "$outcome"
+    return 0
+  else
+    script_error "queue_rejected" "$err"
+    echo "mv_failed"
+    return 1
+  fi
+}
+
+# message output
+
+notice_rejected ()
+{
+  local changes_signed=`basename $1`
+  local outcome=$2
+  local maintainer=$3
+
+  cat <<-HERE
+Hi $maintainer,
+
+Host: `hostname -f`
+Rejected: $changes_signed
+Reason: $outcome
+
+--
+Archive Maintainer ($archive_maint)
+HERE
+  echo mail -s "$changes_signed REJECTED" "$maintainer"
+}
+
+
+notice_accepted ()
+{
+  local changes_signed=`basename $1`
+  local files=$2
+  local maintainer=$3
+
+  cat <<-HERE
+Hi $maintainer,
+
+Host: `hostname -f`
+Accepted: $changes_signed
+ $files
+
+--
+Archive Maintainer ($archive_maint)
+HERE
+  echo mail -s "$changes_signed ACCEPTED" "$maintainer"
+}
+
+script_error ()
+{
+  # FIXME: message should be nicer than that
+  echo "$@" | echo mail -s "Error in `basename $0`" $archive_maint
+}
+
+#
+# main
+#
+
+cd $incoming_dir
+
+shopt -s nullglob
+
+for changes_file in *.changes; do
+  if ! fuser $changes_file; then
+    changes_signed=$unchecked_dir/$changes_file
+    changes=$unchecked_dir/$(basename $changes_file changes)archive
+
+    mv -f $changes_file $changes_signed
+
+    if ! verify_symlink_attack $changes_signed; then
+      queue_rejected $changes_signed "error-symlink-attack"
+    elif ! verify_size $changes_signed; then
+      queue_rejected $changes_signed "toobig-changes-file"
+    elif ! verify_gpg_signature $changes_signed $changes; then
+      queue_rejected $changes_signed "wrong-signature"
+    elif ! verify_md5sums $changes; then
+      queue_rejected $changes_signed "wrong-md5sums"
+    elif ! verify_suite $changes; then
+      queue_rejected $changes_signed "wrong-suite"
+    else
+      ( cd $unchecked_dir; queue_accepted $changes_signed $changes )
+    fi
+  fi
+done
+
+cd -
+

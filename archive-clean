@@ -1,0 +1,7 @@
+#!/bin/bash
+
+. archive-lib
+
+# Find and clean $incoming_dir $rejected_dir $unchecked_dir
+
+

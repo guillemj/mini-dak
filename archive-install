@@ -1,0 +1,66 @@
+#!/bin/bash
+#
+# archive-install script
+#
+# Requires: apt-utils
+
+# Import library
+
+. archive-lib
+
+# file output
+
+pool_install ()
+{
+  local files=$1
+  local dest_dir=$2
+
+  if [ ! -d "$dest_dir" ]; then
+    mkdir -p $dest_dir
+  fi
+
+  if err=`mv $files $dest_dir` ; then
+    echo "install_success"
+    return 0
+  else
+    script_error "$err"
+    echo "install_failed"
+    return 1
+  fi
+}
+
+# message output
+
+script_error ()
+{
+  # FIXME: message should be nicer than that
+  echo "$1" | echo mail -s "Error in `basename $0`" $archive_maint
+}
+
+#
+# main
+#
+
+cd $accepted_dir
+
+shopt -s nullglob
+
+for archive in *.archive; do
+    changes=`basename $archive archive`changes
+    package=$(echo `fetch_source_package < $archive`)
+    section=main
+    hash_dir=`echo $package | \
+      sed -e 's/^\(lib.\).*$/\1/;/^lib/q;s/^\(.\).*$/\1/'`
+    dest_dir=$pool_dir/$section/$hash_dir/$package/
+    files=`fetch_files < $archive`
+
+    pool_install "$files $changes" "$dest_dir"
+    rm $archive
+done
+
+cd -
+
+echo "Regenerating indexes..."
+apt-ftparchive generate $apt_config
+
+
