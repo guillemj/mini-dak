@@ -37,9 +37,8 @@ create_apt_config ()
 	};
 
 	APT::FTPArchive::Release {
-	  Archive		"$archive_name";
 	  Version		"$archive_version";
-	  Origin		"$archive_url";
+	  Origin		"$archive_name";
 	  Label			"$archive_url";
 	}
 
