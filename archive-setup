@@ -85,10 +85,10 @@ create_repo ()
         fi
         mkdir -p $path_dir
         cat > $path_dir/Release <<-HERE
-		Archive: $archive_name
+		Archive: $suite
 		Version: $archive_version
-		Component: $suite/$section
-		Origin: $archive_url
+		Component: $section
+		Origin: $archive_name
 		Label: $archive_url
 		Architecture: $arch
 	HERE
