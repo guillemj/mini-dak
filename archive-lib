@@ -64,6 +64,11 @@ fetch_secure_files ()
   done
 }
 
+get_suite_arches ()
+{
+  eval echo \$arch_list_$suite
+}
+
 valid_arch ()
 {
   local v_arch=$1
@@ -130,7 +135,7 @@ changes_newest ()
 changes_obsolete ()
 {
   while read package arch version; do
-    if [ "$package" = "$g_package" ]; then
+    if [ "$package" = "$g_package" ] && [ "$arch" = "$g_arch" ]; then
       if dpkg --compare-versions $g_version lt $version; then
         printf "%-20s %-20s %-20s\n" $g_package $g_arch $g_version
       fi
