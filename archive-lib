@@ -109,7 +109,7 @@ changes_canonic ()
   done
 }
 
-changes_uniq ()
+changes_newest ()
 {
   while read package arch version; do
     if [ "$package" != "$g_package" ] || [ "$arch" != "$g_arch" ]; then
@@ -124,6 +124,20 @@ changes_uniq ()
         g_arch=$arch
       fi
     fi
+  done
+}
+
+changes_obsolete ()
+{
+  while read package arch version; do
+    if [ "$package" = "$g_package" ]; then
+      if dpkg --compare-versions $g_version lt $version; then
+        printf "%-20s %-20s %-20s\n" $g_package $g_arch $g_version
+      fi
+    fi
+    g_package=$package
+    g_version=$version
+    g_arch=$arch
   done
 }
 

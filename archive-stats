@@ -26,5 +26,5 @@
 echo "-> Doing archive statistics"
 
 find $pool_dir -name '*.changes' | \
-	changes_canonic | sort | changes_uniq > $cache_dir/stats.list
+	changes_canonic | sort | changes_newest > $cache_dir/stats.list
 
