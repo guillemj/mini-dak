@@ -34,10 +34,6 @@ rejected_dir=$queue_dir/rejected/`date -I`
 unchecked_dir=$queue_dir/unchecked
 byhand_dir=$queue_dir/byhand
 
-# Initialize libary
-
-mkdir -p $rejected_dir
-
 ######
 # file input functions
 

@@ -148,6 +148,8 @@ queue_rejected ()
   local outcome=$2
   local maintainer=$3
 
+  mkdir -p $rejected_dir
+
   if err=`mv $changes_signed $rejected_dir` ; then
     log_queue "mv_rejected_success ${changes##*/}"
     notice_rejected $changes_signed "$outcome"
