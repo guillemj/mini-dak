@@ -70,7 +70,7 @@ create_repo ()
   for suite in $suite_list; do
      for section in $section_list; do
       for arch in $arch_list; do
-         if [ $arch = source ]; then
+        if [ $arch = source ]; then
           path_dir=$dists_dir/$suite/$section/$arch
         else
           path_dir=$dists_dir/$suite/$section/binary-$arch
