@@ -28,7 +28,7 @@ LANG=C
 obsolete_dir=$archive_dir/obsolete
 
 #(
-  find $pool_dir -name '*.changes' | \
+  cat $cache_dir/changes.list | \
     changes_canonic | sort | changes_obsolete
 #) | sort | uniq
 

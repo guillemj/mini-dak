@@ -25,6 +25,6 @@
 
 echo "-> Doing archive statistics"
 
-find $pool_dir -name '*.changes' | \
+cat $cache_dir/changes.list | \
 	changes_canonic | sort | changes_newest > $cache_dir/stats.list
 

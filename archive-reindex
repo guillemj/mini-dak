@@ -31,6 +31,9 @@
 # Main
 #
 
+echo "-> Regenerating .changes files list..."
+find $pool_dir -name '*.changes' > $cache_dir/changes.list
+
 echo "-> Regenarating file lists..."
 find $pool_dir -name "*_all.deb" -o -name "*_all.udeb" > $cache_dir/files_all.list
 for arch in $arch_list; do
