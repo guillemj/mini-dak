@@ -2,13 +2,39 @@
 
 . archive-lib
 
+if [ "$1" = "--fix" ]; then
+FIX=yes
+else
+FIX=no
+fi
+
 # Main
 
 echo "-> Doing sanity check over the archive"
 
-echo " -> Regenerating missing .archive files"
-for changes in `find $pool_dir -name '*.changes'`; do
-  archive=${changes%changes}archive
-  strip_changes < $changes > $archive
+if [ $FIX = yes ]; then
+  echo " -> Regenerating missing .archive files"
+  for changes in `find $pool_dir $accepted_dir -name '*.changes'`; do
+    archive=${changes%changes}archive
+    strip_changes < $changes > $archive
+  done
+fi
+
+cd $cache_dir
+
+echo " -> Finding duped packages"
+for p in Packages.*; do
+  echo "  -> Packages duped on ${p#Packages.}"
+  grep '^Package: ' $p | sort | uniq -d
 done
+
+echo " -> Finding empty packages fields"
+for p in Packages.*; do
+  echo "  -> Packages with empty field on ${p#Packages.}"
+  if grep '^Depends: $' $p >& /dev/null; then
+    echo "Empty field(s) found."
+  fi
+done
+
+cd -
 

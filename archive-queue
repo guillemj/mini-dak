@@ -37,14 +37,14 @@ verify_gpg_signature ()
 {
   local changes_signed=$1
   local changes=$2
-  local verify_result=`gpg $archive_keyrings --no-tty --status-fd=2 --verify $changes_signed 2>&1`
+  local verify_result="`gpg $archive_keyrings --no-tty --status-fd=2 --verify $changes_signed 2>&1`"
 
   if wrong=`echo "$verify_result" | grep '^\[GNUPG:\] BADSIG '`; then
     return 1
   elif good=`echo "$verify_result" | grep '^\[GNUPG:\] GOODSIG '`; then
-    strip_changes < $changes_signed > $changes
-    local signed_by=`echo $good | cut -d\  -f4-`
-    echo "Signed-By: $signed_by" >> $changes
+    local signed_by="`echo "$good" | cut -d\  -f4-`"
+    strip_changes < $changes_signed \
+      | formail -a"Signed-By: $signed_by" > $changes
     return 0
   else
     return 1
@@ -57,7 +57,7 @@ verify_md5sums ()
   local files=`secure_files $changes`
 
   if err=`mv $files $unchecked_dir` ; then
-    echo "mv_unechekced_success"
+    log_queue "mv_unechekced_success ${changes##*/}"
 
     if fetch_md5sums < $changes | \
        ( cd $unchecked_dir; md5sum.textutils -c >& /dev/null ); then
@@ -67,7 +67,7 @@ verify_md5sums ()
     fi
   else
     script_error "verify_md5sums" "$err"
-    echo "mv_unchecked_failed"
+    log_queue "mv_unchecked_failed ${changes##*/}"
     return 1
   fi
 
@@ -109,18 +109,18 @@ queue_accepted ()
   local changes=$2
   local files=`secure_files $changes`
   local files_install="$files $changes_signed $changes"
+  local signer=`fetch_field "Signed-By" < $changes`
 
   chmod $archive_perms $files_install
   chown $archive_owner:$archive_group $files_install
 
   if err=`mv $files_install $accepted_dir` ; then
-    local signer=`fetch_field "Signed-By" < $changes`
-    echo "mv_success"
-    notice_accepted $changes_signed "$files" "$signer" 
+    log_queue "mv_success ${changes##*/}"
+    notice_accepted $changes_signed "$files" "$signer"
     return 0
   else
     script_error "queue_accepted" "$err"
-    echo "mv_failed"
+    log_queue "mv_failed ${changes##*/}"
     return 1
   fi
 }
@@ -132,12 +132,12 @@ queue_rejected ()
   local maintainer=$3
 
   if err=`mv $changes_signed $rejected_dir` ; then
-    echo "mv_success"
+    log_queue "mv_success ${changes##*/}"
     notice_rejected $changes_signed "$outcome"
     return 0
   else
     script_error "queue_rejected" "$err"
-    echo "mv_failed"
+    log_queue "mv_failed ${changes##*/}"
     return 1
   fi
 }
@@ -146,48 +146,40 @@ queue_rejected ()
 
 notice_rejected ()
 {
-  local changes_signed=`basename $1`
+  local changes_signed=${1##*/}
   local outcome=$2
   local maintainer=$3
 
-  cat <<-HERE
+  ( cat <<-HERE
 Uploader: $maintainer
 Host: `hostname -f`
 Rejected: $changes_signed
 Reason: $outcome
-
---
-Archive Maintainer ($archive_maint)
 HERE
-  echo mail -s "$changes_signed REJECTED" "$maintainer"
-  echo
+  ) | msg_mail "$changes_signed REJECTED" "$maintainer"
 }
 
 
 notice_accepted ()
 {
-  local changes_signed=`basename $1`
+  local changes_signed=${1##*/}
   local files=$2
   local maintainer=$3
 
-  cat <<-HERE
+  ( cat <<-HERE
 Uploader: $maintainer
 Host: `hostname -f`
 Accepted: $changes_signed
-
+Files:
 $files
-
---
-Archive Maintainer ($archive_maint)
 HERE
-  echo mail -s "$changes_signed ACCEPTED" "$maintainer"
-  echo
+  ) | msg_mail "$changes_signed ACCEPTED" "$maintainer"
 }
 
 script_error ()
 {
   # FIXME: message should be nicer than that
-  echo "$@" | echo mail -s "Error in `basename $0`" $archive_maint
+  echo "$@" | log_queue mail -s "Error in `basename $0`" $archive_maint
 }
 
 #

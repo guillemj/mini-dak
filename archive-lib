@@ -21,7 +21,7 @@ byhand_dir=$queue_dir/byhand
 fetch_field ()
 {
   local field=$1
-  
+
   formail -x$field:
 }
 
@@ -56,5 +56,37 @@ block && contents { print }
 /^-----BEGIN PGP SIGNED/ { block = 1 }
 block && /^ *$/ { contents = 1 }
 '
+}
+
+
+log_install ()
+{
+  echo "$@" | tee -a $log_dir/install-`date -I`.log
+}
+
+log_queue ()
+{
+  echo "$@" | tee -a $log_dir/queue-`date -I`.log
+}
+
+msg_mail ()
+{
+  local subject=$1
+  local recipient=$2
+
+  (
+    cat
+    echo "$subject"
+    echo
+  ) | tee -a $log_dir/queue-`date -I`.log
+
+  if [ "$MAIL_REPORT" = "yes" ]; then
+    (
+      cat
+      echo
+      echo "-- "
+      echo "Archive Maintainer ($archive_maint)"
+    ) | mail -s "$subject" "$recipient"
+  fi
 }
 

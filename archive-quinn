@@ -40,21 +40,27 @@ sort_by_section()
   rm -f $tmpfile
 }
 
-cd $quinn_dir
+cd $cache_dir
 
 echo "-> Generating Quinn-Diff stats"
 
 echo " -> Collecting Sources files"
 wget -N http://jane.uab.es/debian/dists/unstable/main/source/Sources.bz2
 bunzip2 -c Sources.bz2 > Sources
+echo " -> Collecting hurd-i386 binary files"
+wget -N http://jane.uab.es/debian/dists/unstable/main/binary-hurd-i386/Packages.bz2 -O Packages-unstable.hurd-i386.bz2
+bunzip2 -c Packages-unstable.hurd-i386.bz2 > Packages-unstable.hurd-i386
 
 echo " -> Collecting Packages files"
 for arch in $arch_list; do
   if [ $arch != source ]; then
     echo "  -> Architectrure: $arch"
     cat $dists_dir/unreleased/main/binary-$arch/Packages > Packages.$arch
-    sort_by_priority -A$arch -p Packages.$arch -i > quinn-$arch.prio
-    sort_by_section -A$arch -p Packages.$arch -i > quinn-$arch.sect
+    if [ $arch = hurd-i386 ]; then
+      cat Packages-unstable.hurd-i386 >> Packages.$arch
+    fi
+    sort_by_priority -A$arch -p Packages.$arch -i > $quinn_dir/quinn-$arch.prio
+    sort_by_section -A$arch -p Packages.$arch -i > $quinn_dir/quinn-$arch.sect
   fi
 done
 

@@ -12,6 +12,7 @@ create_apt_config ()
 {
   cat > $apt_config <<-HERE
 	Default {
+	  Packages::Extensions	".deb .udeb";
 	  Packages::Compress	". gzip bzip2";
 	  Sources::Compress	". gzip bzip2";
 	};
