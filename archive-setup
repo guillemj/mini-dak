@@ -40,6 +40,7 @@ create_apt_config ()
 	  ArchiveDir		"$archive_dir";
 	  OverrideDir		"$indices_dir";
 	  CacheDir		"$cache_dir";
+	  FileListDir		"$cache_dir";
 	};
 
 	TreeDefault {
@@ -52,7 +53,7 @@ HERE
   for suite in $suite_list; do
     cat >> $apt_config <<-HERE
 	Tree "dists/$suite" {
-	  FileList		"$cache_dir/files_${suite}_\$(ARCH).list";
+	  FileList		"files_${suite}_\$(ARCH).list";
 	  Sections		"$section_list";
 	  Architectures		"$(get_suite_arches $suite)";
 	};
