@@ -42,7 +42,7 @@ fetch_field ()
 {
   local field=$1
 
-  formail -x$field:
+  formail -z -x$field:
 }
 
 fetch_files ()
@@ -104,7 +104,7 @@ poolize_name()
 {
   local archive_file=$1
 
-  package=$(echo `fetch_field "Source" < $archive_file`)
+  package=`fetch_field "Source" < $archive_file`
   section=main
   hash_dir=`echo $package | \
     sed -e 's/^\(lib.\).*$/\1/;/^lib/q;s/^\(.\).*$/\1/'`
