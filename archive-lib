@@ -72,6 +72,11 @@ get_suite_arches ()
   eval echo \$arch_list_$suite
 }
 
+get_suite_sections ()
+{
+  echo $section_list
+}
+
 valid_arch ()
 {
   local v_suite=$1
