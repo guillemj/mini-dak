@@ -93,13 +93,13 @@ verify_arch ()
   local changes=$1
   local target_arches=`fetch_field "Architecture" < $changes`
 
-  for arch in $arch_list; do
-    if [ $arch = $target_arches ]; then
-      return 0
+  for arch in $target_arches; do
+    if ! valid_arch $arch; then
+      return 1
     fi
   done
 
-  return 1
+  return 0
 }
 
 # file output
@@ -207,6 +207,8 @@ for changes_file in *.changes; do
       queue_rejected $changes_signed "wrong-md5sums"
     elif ! verify_suite $changes; then
       queue_rejected $changes_signed "wrong-suite"
+    elif ! verify_arch $changes; then
+      queue_rejected $changes_signed "wrong-arch"
     else
       ( cd $unchecked_dir; queue_accepted $changes_signed $changes )
     fi
