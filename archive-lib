@@ -50,8 +50,8 @@ canonic_suite()
   local code_name=$1
 
   for s_alias in $suite_alias; do
-    s_code_name=$(echo $s_alias | cut -d: -f1)
-    s_suite=$(echo $s_alias | cut -d: -f2)
+    s_code_name=${s_alias%%:*}
+    s_suite=${s_alias##*:}
 
     if [ "$code_name" = $s_code_name ]; then
       echo $s_suite
