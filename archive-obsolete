@@ -28,5 +28,5 @@ LANG=C
 cd $cache_dir
 
 cat changes.list | changes_newest > ch_new.list
-sort changes.list ch_new.list | sort | uniq -u > ch_obs.list
+sort changes.list ch_new.list | uniq -u > ch_obs.list
 
