@@ -9,7 +9,8 @@
 
 echo "-> Doing archive statistics"
 
-for f_changes in `find $pool_dir -name '*.changes'`; do
+find $pool_dir -name '*.changes' |
+while read f_changes; do
   dir=`dirname $f_changes`
   changes=`basename ${f_changes%.changes}`
   package=`ehco $changes | cut -d_ -f1`
