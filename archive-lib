@@ -214,6 +214,16 @@ dirs_owner_perms ()
   chmod $archive_perms_dir $dirs
 }
 
+time_full ()
+{
+  date -Iseconds | tr 'T' ' '
+}
+
+echo_time ()
+{
+  echo "`time_full` $@"
+}
+
 logpipe()
 {
   local name=$1

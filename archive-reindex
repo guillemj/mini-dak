@@ -31,11 +31,11 @@
 # Main
 #
 
-echo "-> Regenerating .changes files list..."
+echo_time "-> Regenerating .changes files list..."
 find $pool_dir -name '*.changes' | changes_canonic | \
   sort > $cache_dir/changes.list
 
-echo "-> Regenarating file lists..."
+echo_time "-> Regenarating file lists..."
 cat $cache_dir/changes.list | while read package suite arch version path; do
   archive_file=`changes_strip < $path`
   basepath=`dirname $path`
@@ -50,21 +50,26 @@ cat $cache_dir/changes.list | while read package suite arch version path; do
   fi
 done
 
-#echo "-> Removing existing file lists..."
+#echo_time "-> Removing existing file lists..."
 #rm -f $cache_dir/files_*_*.list
 
-echo "-> Moving new file lists into place..."
+echo_time "-> Moving new file lists into place..."
 for suite in $suite_list; do
+  touch $cache_dir/files_${suite}_all.list.new
+  mv -f $cache_dir/files_${suite}_all.list
+
   for arch in $(get_suite_arches $suite); do
     if [ $arch != source ]; then
       touch $cache_dir/files_${suite}_$arch.list.new
       mv -f $cache_dir/files_${suite}_$arch.list.new \
             $cache_dir/files_${suite}_$arch.list
+      cat $cache_dir/files_${suite}_all.list >> \
+          $cache_dir/files_${suite}_$arch.list
     fi
   done
 done
 
-echo "-> Regenerating indexes..."
+echo_time "-> Regenerating indexes..."
 apt-ftparchive generate $apt_config
 for suite in $suite_list; do
   rm -f $dists_dir/$suite/Release
