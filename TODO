@@ -1,0 +1,11 @@
+TODO
+====
+
+ * implement clean of incoming and queue/unchecked.
+ * distribution split
+ * files uplaoded size match
+ * locking of actions
+ * a script to manually obsolete packages
+ * automatic obsoleting
+ * support setup for different arches per dist
+
