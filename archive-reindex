@@ -17,8 +17,10 @@ find $pool_dir -name "*_all.deb" -o -name "*_all.udeb" > $cache_dir/files_all.li
 for arch in $arch_list; do
   if [ $arch != source ]; then
     echo " -> Listing $arch debs"
-    find $pool_dir -name "*_$arch.deb" -o -name "*_$arch.udeb" > $cache_dir/files_$arch.list
-    cat $cache_dir/files_all.list >> $cache_dir/files_$arch.list
+    (
+      find $pool_dir -name "*_$arch.deb" -o -name "*_$arch.udeb"
+      cat $cache_dir/files_all.list
+    ) > $cache_dir/files_$arch.list
   fi
 done
 

@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+# archive-obsolete
+#
+# Requires: awk
+
+# Import configuration
+
+. archive-lib
+
+mk_obsolete ()
+{
+  while read p v f; do
+    if [ "$p" = "$pa" ]; then
+      if dpkg --compare-versions $va lt $v; then
+        echo $fa
+      fi
+    fi
+    pa=$p
+    va=$v
+    fa=$f
+  done
+}
+
+package_version_filename ()
+{
+  awk '
+/^Package: / { package = $2 }
+/^Version: / { version = $2 }
+/^Filename: / { print package " " version " " $2 }'
+}
+
+LANG=C
+
+dir=$dists_dir/unstable/main
+obsolete_dir=$archive_dir/obsolete
+
+(
+  for arch in $arch_list; do
+    cat $dir/binary-$arch/Packages | package_version_filename | \
+      sort | mk_obsolete
+  done
+) | sort | uniq
+

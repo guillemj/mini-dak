@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+# archive-mv-arch
+#
+# Requires: awk
+
+# Import configuration
+
+. archive-lib
+
+target_arch=$1
+
+dir=$dists_dir/unstable/main
+obsolete_dir=$archive_dir/obsolete
+target_arch_dir=$obsolete_dir/$target_arch
+
+echo "-> Obsoleting arch: $target_arch"
+
+cat $cache_dir/$target_arch.list | while read file
+do
+  echo " -> Obsoleting: $file"
+  target_dir=`dirname $file`
+  mkdir -p $target_arch_dir/$target_dir
+  mv $pool_dir/$file $target_arch_dir/$target_dir
+done
+
+echo " done."
+
