@@ -67,11 +67,7 @@ shopt -s nullglob
 
 for archive_file in *.archive; do
     changes_file=`basename $archive_file archive`changes
-    package=$(echo `fetch_field "Source" < $archive_file`)
-    section=main
-    hash_dir=`echo $package | \
-      sed -e 's/^\(lib.\).*$/\1/;/^lib/q;s/^\(.\).*$/\1/'`
-    dest_dir=$pool_dir/$section/$hash_dir/$package/
+    dest_dir=`poolize_name $archive_file`
     files=`fetch_files < $archive_file`
 
     pool_install "$changes_file" "$files" "$dest_dir"

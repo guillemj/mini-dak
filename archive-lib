@@ -100,6 +100,19 @@ canonic_suite()
   echo $code_name
 }
 
+poolize_name()
+{
+  local archive_file=$1
+
+  package=$(echo `fetch_field "Source" < $archive_file`)
+  section=main
+  hash_dir=`echo $package | \
+    sed -e 's/^\(lib.\).*$/\1/;/^lib/q;s/^\(.\).*$/\1/'`
+  dest_dir=$pool_dir/$section/$hash_dir/$package/
+
+  echo $dest_dir
+}
+
 # .changes managment functions
 
 changes_canonic ()
