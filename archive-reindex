@@ -37,14 +37,16 @@ find $pool_dir -name '*.changes' | changes_canonic | \
 
 echo "-> Regenarating file lists..."
 find $pool_dir -name "*_all.deb" -o -name "*_all.udeb" > $cache_dir/files_all.list
-for arch in $arch_list; do
-  if [ $arch != source ]; then
-    echo " -> Listing $arch debs"
-    (
-      find $pool_dir -name "*_$arch.deb" -o -name "*_$arch.udeb"
-      cat $cache_dir/files_all.list
-    ) > $cache_dir/files_$arch.list
-  fi
+for suite in $suite_list; do
+  for arch in $(get_suite_arches $suite); do
+    if [ $arch != source ]; then
+      echo " -> Listing $arch debs"
+      (
+        find $pool_dir -name "*_$arch.deb" -o -name "*_$arch.udeb"
+        cat $cache_dir/files_all.list
+      ) > $cache_dir/files_${suite}_$arch.list
+    fi
+  done
 done
 
 echo "-> Regenerating indexes..."

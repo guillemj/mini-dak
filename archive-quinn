@@ -78,7 +78,7 @@ wget -N http://jane.uab.es/debian/dists/unstable/main/binary-hurd-i386/Packages.
 bunzip2 -c Packages-unstable.hurd-i386.bz2 > Packages-unstable.hurd-i386
 
 echo " -> Collecting Packages files"
-for arch in $arch_list; do
+for arch in $arch_list_unreleased; do
   if [ $arch != source ]; then
     echo "  -> Architecture: $arch"
     cat $dists_dir/unreleased/main/binary-$arch/Packages > Packages.$arch

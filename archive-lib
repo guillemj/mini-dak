@@ -67,14 +67,17 @@ fetch_secure_files ()
 
 get_suite_arches ()
 {
+  local suite=$(canonic_suite $1)
+
   eval echo \$arch_list_$suite
 }
 
 valid_arch ()
 {
-  local v_arch=$1
+  local v_suite=$1
+  local v_arch=$2
 
-  for arch in $arch_list all; do
+  for arch in $(get_suite_arches $v_suite) all; do
     if [ "$arch" = "$v_arch" ]; then
       return 0
     fi

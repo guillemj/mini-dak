@@ -109,9 +109,10 @@ verify_arch ()
 {
   local archive_file=$1
   local target_arches=`fetch_field "Architecture" < $archive_file`
+  local suite=`fetch_field "Distribution" < $archive_file`
 
   for arch in $target_arches; do
-    if ! valid_arch $arch; then
+    if ! valid_arch $suite $arch; then
       return 1
     fi
   done
