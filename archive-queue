@@ -74,7 +74,7 @@ verify_md5sums ()
   local files=`fetch_secure_files $changes`
 
   if err=`mv $files $unchecked_dir` ; then
-    log_queue "mv_uncehecked_success ${changes##*/}"
+    log_queue "mv_unchecked_success ${changes##*/}"
 
     if fetch_md5sums < $changes | \
        ( cd $unchecked_dir; md5sum.textutils -c >& /dev/null ); then
