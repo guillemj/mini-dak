@@ -45,6 +45,23 @@ secure_files ()
   done
 }
 
+canonic_suite()
+{
+  local code_name=$1
+
+  for s_alias in $suite_alias; do
+    s_code_name=$(echo $s_alias | cut -d: -f1)
+    s_suite=$(echo $s_alias | cut -d: -f2)
+
+    if [ "$code_name" = $s_code_name ]; then
+      echo $s_suite
+      return 0
+    fi
+  done
+
+  echo $code_name
+}
+
 # .changes managment functions
 
 strip_changes ()
