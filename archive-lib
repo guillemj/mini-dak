@@ -151,7 +151,9 @@ changes_newest ()
     if [ "$package" != "$g_package" ] ||
        [ "$suite" != "$g_suite" ] ||
        [ "$arch" != "$g_arch" ]; then
-      printf "%s %s %s %s %s\n" $g_package $g_suite $g_arch $g_version $g_path
+      if [ -n "$g_package" ]; then
+        printf "%s %s %s %s %s\n" $g_package $g_suite $g_arch $g_version $g_path
+      fi
       g_package=$package
       g_version=$version
       g_suite=$suite
