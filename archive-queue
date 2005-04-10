@@ -68,6 +68,28 @@ verify_gpg_signature ()
   fi
 }
 
+verify_dpkg_signature ()
+{
+  local archive_file=$1
+  local files=`fetch_secure_files $archive_file | grep '\.deb$'`
+
+  if [ "$use_dpkg_sig" != yes ]; then
+    return 0
+  fi
+
+  for f in $files; do
+    verify_result="`dpkg-sig --verify-role builder $f 2>&1`"
+
+    if good=`echo "$verify_result" | grep '^GOODSIG '`; then
+      :
+    else
+      return 1
+    fi
+  done
+
+  return 0
+}
+
 verify_md5sums ()
 {
   local archive_file=$1
@@ -244,6 +266,11 @@ for changes_file in *.changes; do
     fi
 
     signer=`fetch_field "Signed-By" < $archive_file`
+
+    if ! verify_dpkg_signature $archive_file; then
+      queue_rejected "wrong-dpkg-signature" $changes_file $archive_file "$signer"
+      continue
+    fi
 
     if ! verify_md5sums $archive_file; then
       queue_rejected "wrong-md5sums" $changes_file $archive_file "$signer"
