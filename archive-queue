@@ -71,7 +71,7 @@ verify_gpg_signature ()
 verify_dpkg_signature ()
 {
   local archive_file=$1
-  local files=`fetch_secure_files $archive_file | grep '\.deb$'`
+  local files=`fetch_secure_files $archive_file | grep '\.u\?deb$'`
 
   if [ "$use_dpkg_sig" != yes ]; then
     return 0
