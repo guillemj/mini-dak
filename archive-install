@@ -39,11 +39,11 @@ pool_install ()
     mkdir -p $dest_dir
   fi
 
-  if err=`mv $files $dest_dir` ; then
+  if mv $files $dest_dir; then
     log install "install_success $changes"
     return 0
   else
-    script_error "$err"
+    script_error "$?"
     log install "install_failed $changes"
     return 1
   fi

@@ -73,7 +73,7 @@ verify_md5sums ()
   local archive_file=$1
   local files=`fetch_secure_files $archive_file`
 
-  if err=`mv $files $unchecked_dir` ; then
+  if mv $files $unchecked_dir; then
     log queue "mv_unchecked_success ${archive_file##*/}"
 
     if fetch_md5sums < $archive_file | \
@@ -83,7 +83,7 @@ verify_md5sums ()
       return 1
     fi
   else
-    script_error "verify_md5sums" "$err"
+    script_error "verify_md5sums" "$?"
     log queue "mv_unchecked_failed ${archive_file##*/}"
     return 1
   fi
@@ -132,12 +132,12 @@ queue_accepted ()
 
   files_owner_perms $files_install
 
-  if err=`mv $files_install $accepted_dir` ; then
+  if mv $files_install $accepted_dir; then
     log queue "mv_accepted_success ${archive_file##*/}"
     notice_accepted $changes_file "$files" "$signer"
     return 0
   else
-    script_error "queue_accepted" "$err"
+    script_error "queue_accepted" "$?"
     log queue "mv_accepted_failed ${archive_file##*/}"
     return 1
   fi
@@ -159,12 +159,12 @@ queue_rejected ()
     files=$changes_file
   fi
 
-  if err=`mv $files $rejected_daily_dir` ; then
+  if mv $files $rejected_daily_dir; then
     log queue "mv_rejected_success ${archive_file##*/}"
     notice_rejected $changes_file "$outcome" "$signer"
     return 0
   else
-    script_error "queue_rejected" "$err"
+    script_error "queue_rejected" "$?"
     log queue "mv_rejected_failed ${archive_file##*/}"
     return 1
   fi
