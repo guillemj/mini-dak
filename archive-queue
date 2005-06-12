@@ -94,12 +94,17 @@ verify_md5sums ()
 {
   local archive_file=$1
   local files=`fetch_secure_files $archive_file`
+  local md5sum=md5sum.textutils
+
+  if ! which $md5sum >/dev/null; then
+    md5sum=md5sum
+  fi
 
   if mv $files $unchecked_dir; then
     log queue "mv_unchecked_success ${archive_file##*/}"
 
     if fetch_md5sums < $archive_file | \
-       ( cd $unchecked_dir; md5sum.textutils -c >& /dev/null ); then
+       ( cd $unchecked_dir; $md5sum -c >& /dev/null ); then
       return 0
     else
       return 1
