@@ -147,6 +147,25 @@ verify_arch ()
   return 0
 }
 
+verify_multiarch_changes ()
+{
+  local archive_file=$1
+  local target_arches=`fetch_field "Architecture" < $archive_file`
+  local multiarch=0
+
+  for arch in $target_arches; do
+    if [ $arch != source ]; then
+      : $((multiarch++))
+    fi
+  done
+
+  if [ $multiarch -gt 1 ]; then
+    return 1
+  else
+    return 0
+  fi
+}
+
 # file output
 
 queue_accepted ()
@@ -291,6 +310,11 @@ for changes_file in *.changes; do
 
     if ! verify_arch $archive_file; then
       queue_rejected "wrong-arch" $changes_file $archive_file "$signer"
+      continue
+    fi
+
+    if ! verify_multiarch_changes $archive_file; then
+      queue_rejected "wrong-multiarch-changes" $changes_file $archive_file "$signer"
       continue
     fi
 
