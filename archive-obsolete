@@ -2,7 +2,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2004 Guillem Jover <guillem@debian.org>
+# Copyright (C) 2004, 2005 Guillem Jover <guillem@debian.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,4 +29,21 @@ cd $cache_dir
 
 cat changes.list | changes_newest > ch_new.list
 sort changes.list ch_new.list | uniq -u > ch_obs.list
+sort ch_new.list ch_obs.list > ch_full.list
+
+if ! cmp -s changes.list ch_full.list; then
+  echo "-> Obsolete list ok, proceeding ..."
+  cat ch_obs.list | while read package suite arch version changes_file; do
+    srcfiles=`changes_strip < $changes_file | fetch_files`
+
+    # get arch files
+    # get all files
+    #  if other arches
+
+    echo $changes_file $srcfiles $dstdir
+  done
+  echo "-> Done."
+else
+  echo "-> Obsolete list error, manual intervetion needed."
+fi
 
