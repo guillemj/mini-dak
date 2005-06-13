@@ -70,8 +70,10 @@ for suite in $suite_list; do
   done
 done
 
-echo_time "-> Regenerating indexes..."
+echo_time "-> Regenerating Packages and Sources files..."
 apt-ftparchive generate $apt_config
+
+echo_time "-> Regenerating Releases files..."
 for suite in $suite_list; do
   rm -f $dists_dir/$suite/Release
   apt-ftparchive -c $apt_config \
