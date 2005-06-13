@@ -29,14 +29,10 @@
 
 # file output
 
-pool_install ()
+get_single_arch ()
 {
   local archive_file=$1
-  local package=`fetch_field "Source" < $archive_file`
   local arches=`fetch_field "Architecture" < $archive_file`
-  local section=main
-  local hash_dir=`poolize_hash_name $package`
-  local dest_dir
 
   for arch in $arches; do
     case $arch in
@@ -45,9 +41,24 @@ pool_install ()
 	;;
     esac
 
-    dest_dir="$pool_dir/$arch/$section/$hash_dir/$package"
-    break
+    echo $arch
+    return 0
   done
+}
+
+pool_install ()
+{
+  local archive_file=$1
+  local package=`fetch_field "Source" < $archive_file`
+  local dest_dir
+
+  if [ "$multipool" = "yes" ]; then
+    local arch=`get_single_arch $archive_file`
+
+    dest_dir=`poolize_arch_name $arch $package`
+  else
+    dest_dir=`poolize_package_name $package`
+  fi
 
   if [ ! -d "$dest_dir" ]; then
     mkdir -p $dest_dir
