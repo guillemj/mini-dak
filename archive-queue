@@ -93,28 +93,17 @@ verify_dpkg_signature ()
 verify_md5sums ()
 {
   local archive_file=$1
-  local files=`fetch_secure_files < $archive_file`
   local md5sum=md5sum.textutils
 
   if ! which $md5sum >/dev/null; then
     md5sum=md5sum
   fi
 
-  if mv $files $unchecked_dir; then
-    log queue "mv_unchecked_success ${archive_file##*/}"
-
-    if fetch_md5sums < $archive_file | \
-       ( cd $unchecked_dir; $md5sum -c >& /dev/null ); then
-      return 0
-    else
-      return 1
-    fi
+  if fetch_md5sums < $archive_file | $md5sum -c >& /dev/null; then
+    return 0
   else
-    script_error "verify_md5sums" "$?"
-    log queue "mv_unchecked_failed ${archive_file##*/}"
     return 1
   fi
-
 }
 
 verify_suite ()
@@ -300,12 +289,21 @@ for changes_file in *.changes; do
       continue
     fi
 
-    if ! verify_md5sums $archive_file; then
-      queue_rejected "wrong-md5sums" $changes_file $archive_file "$signer"
+    # Move the .archive contents to unchecked
+
+    if archive_move secure "$archive_file" "$unchecked_dir"; then
+      log queue "mv_unchecked_success ${archive_file##*/}"
+    else
+      log queue "mv_unchecked_failed ${archive_file##*/}"
       continue
     fi
 
     cd $unchecked_dir
+
+    if ! verify_md5sums $archive_file; then
+      queue_rejected "wrong-md5sums" $changes_file $archive_file "$signer"
+      continue
+    fi
 
     if ! verify_suite $archive_file; then
       queue_rejected "wrong-suite" $changes_file $archive_file "$signer"

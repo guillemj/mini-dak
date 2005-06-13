@@ -32,8 +32,6 @@
 pool_install ()
 {
   local archive_file=$1
-  local changes_file=`basename $archive_file archive`changes
-  local files="`fetch_files < $archive_file` $changes_file"
   local package=`fetch_field "Source" < $archive_file`
   local arches=`fetch_field "Architecture" < $archive_file`
   local section=main
@@ -55,12 +53,12 @@ pool_install ()
     mkdir -p $dest_dir
   fi
 
-  if mv $files $dest_dir; then
-    log install "install_success $changes_file"
+  if archive_move $archive_file $dest_dir; then
+    log install "install_success ${archive_file##*/}"
     return 0
   else
     script_error "$?"
-    log install "install_failed $changes_file"
+    log install "install_failed ${archive_file##*/}"
     return 1
   fi
 }

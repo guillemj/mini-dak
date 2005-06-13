@@ -210,6 +210,28 @@ block && /^ *$/ { contents = 1 }
 '
 }
 
+archive_move ()
+{
+  local mode=$1
+  local fetch_files='fetch_files'
+  if [ $mode = "secure" ]; then
+    fetch_files='fetch_secure_files'
+    shift
+  fi
+  local archive_file=$1
+  local changes_file=`basename $archive_file archive`changes
+  local dest_dir=$2
+  local files=`$fetch_files < $archive_file`
+
+  mv -f $changes_file "$dest_dir" 2>/dev/null
+
+  if mv $files "$dest_dir"; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 files_owner_perms ()
 {
   local files=$@
