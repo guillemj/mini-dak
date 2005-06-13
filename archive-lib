@@ -60,7 +60,7 @@ fetch_secure_files ()
   local files=`fetch_files`
 
   for file in $files; do
-    echo $(basename `readlink -f $file`)
+    echo $(basename "`readlink -f $file`")
   done
 }
 
