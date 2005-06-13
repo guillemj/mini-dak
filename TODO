@@ -8,7 +8,5 @@ TODO
  * check if size matches for files uploaded
  * check for non-existent files
  * locking of actions
- * the code to move the files from incoming to unchecked should be split from
-   verify_md5sum
  * rewrite in perl?
 
