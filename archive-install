@@ -31,20 +31,36 @@
 
 pool_install ()
 {
-  local changes=$1
-  local files="$2 $changes"
-  local dest_dir=$3
+  local archive_file=$1
+  local changes_file=`basename $archive_file archive`changes
+  local files="`fetch_files < $archive_file` $changes_file"
+  local package=`fetch_field "Source" < $archive_file`
+  local arches=`fetch_field "Architecture" < $archive_file`
+  local section=main
+  local hash_dir=`poolize_hash_name $package`
+  local dest_dir
+
+  for arch in $arches; do
+    case $arch in
+      source|all)
+	continue
+	;;
+    esac
+
+    dest_dir="$pool_dir/$arch/$section/$hash_dir/$package"
+    break
+  done
 
   if [ ! -d "$dest_dir" ]; then
     mkdir -p $dest_dir
   fi
 
   if mv $files $dest_dir; then
-    log install "install_success $changes"
+    log install "install_success $changes_file"
     return 0
   else
     script_error "$?"
-    log install "install_failed $changes"
+    log install "install_failed $changes_file"
     return 1
   fi
 }
@@ -66,11 +82,7 @@ cd $accepted_dir
 shopt -s nullglob
 
 for archive_file in *.archive; do
-    changes_file=`basename $archive_file archive`changes
-    dest_dir=`poolize_archive_file $archive_file`
-    files=`fetch_files < $archive_file`
-
-    pool_install "$changes_file" "$files" "$dest_dir"
+    pool_install "$archive_file"
     rm $archive_file
 
     INSTALLED=yes

@@ -108,22 +108,33 @@ canonic_suite()
   echo $code_name
 }
 
-poolize_archive_file()
+poolize_hash_name()
 {
-  local archive_file=$1
-  local package=`fetch_field "Source" < $archive_file`
+  local name=$1
+  local hash_dir=`echo $1 | \
+    sed -e 's/^\(lib.\).*$/\1/;/^lib/q;s/^\(.\).*$/\1/'`
 
-  poolize_name $package
+  echo $hash_dir
 }
 
-poolize_name()
+poolize_package_name()
 {
   local name=$1
   local package=`echo $name | cut -d_ -f1`
   local section=main
-  local hash_dir=`echo $package | \
-    sed -e 's/^\(lib.\).*$/\1/;/^lib/q;s/^\(.\).*$/\1/'`
+  local hash_dir=`poolize_hash_name $package`
   local dest_dir=$pool_dir/$section/$hash_dir/$package/
+
+  echo $dest_dir
+}
+
+poolize_arch_name()
+{
+  local package=$1
+  local arch=$2
+  local section=main
+  local hash_dir=`poolize_hash_name $package`
+  local dest_dir=$pool_dir/$arch/$section/$hash_dir/$package/
 
   echo $dest_dir
 }

@@ -46,7 +46,7 @@ create_apt_config ()
 	};
 
 	TreeDefault {
-	  Directory		"pool/";
+	  Directory		"pool/\$(ARCH)/";
 	  SrcDirectory		"pool/";
 	};
 	

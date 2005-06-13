@@ -9,6 +9,5 @@ TODO
  * locking of actions
  * the code to move the files from incoming to unchecked should be split from
    verify_md5sum
- * support tag filters || arch pool split?
  * rewrite in perl?
 
