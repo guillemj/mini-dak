@@ -57,8 +57,7 @@ fetch_md5sums ()
 
 fetch_secure_files ()
 {
-  local changes=$1
-  local files=`fetch_files < $changes`
+  local files=`fetch_files`
 
   for file in $files; do
     echo $(basename `readlink -f $file`)

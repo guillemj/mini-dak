@@ -71,7 +71,7 @@ verify_gpg_signature ()
 verify_dpkg_signature ()
 {
   local archive_file=$1
-  local files=`fetch_secure_files $archive_file | grep '\.u\?deb$'`
+  local files=`fetch_secure_files < $archive_file | grep '\.u\?deb$'`
 
   if [ "$use_dpkg_sig" != yes ]; then
     return 0
@@ -93,7 +93,7 @@ verify_dpkg_signature ()
 verify_md5sums ()
 {
   local archive_file=$1
-  local files=`fetch_secure_files $archive_file`
+  local files=`fetch_secure_files < $archive_file`
   local md5sum=md5sum.textutils
 
   if ! which $md5sum >/dev/null; then
@@ -173,7 +173,7 @@ queue_accepted ()
   local changes_file=$1
   local archive_file=$2
   local signer=$3
-  local files=`fetch_secure_files $archive_file`
+  local files=`fetch_secure_files < $archive_file`
   local files_install="$files $changes_file $archive_file"
 
   files_owner_perms $files_install
@@ -200,7 +200,7 @@ queue_rejected ()
   mkdir -p $rejected_daily_dir
 
   if [ "$signer" ]; then
-    files="`fetch_secure_files $archive_file` $changes_file $archive_file"
+    files="`fetch_secure_files < $archive_file` $changes_file $archive_file"
   else
     files=$changes_file
   fi
