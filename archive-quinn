@@ -2,7 +2,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2003, 2004 Guillem Jover <guillem@debian.org>
+# Copyright (C) 2003, 2004, 2005 Guillem Jover <guillem@debian.org>
 #
 # Functions sort_by_priority and sort_by_section ripped from quinn-diff
 # package's example scripts.
