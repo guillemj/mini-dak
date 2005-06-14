@@ -71,10 +71,10 @@ cd $cache_dir
 echo "-> Generating Quinn-Diff stats"
 
 echo " -> Collecting Sources files"
-wget -N http://jane.uab.es/debian/dists/unstable/main/source/Sources.bz2
+wget -N $debian_archive/dists/unstable/main/source/Sources.bz2
 bunzip2 -c Sources.bz2 > Sources
 echo " -> Collecting hurd-i386 binary files"
-wget -N http://jane.uab.es/debian/dists/unstable/main/binary-hurd-i386/Packages.bz2 -O Packages-unstable.hurd-i386.bz2
+wget -N $debian_archive/dists/unstable/main/binary-hurd-i386/Packages.bz2 -O Packages-unstable.hurd-i386.bz2
 bunzip2 -c Packages-unstable.hurd-i386.bz2 > Packages-unstable.hurd-i386
 
 echo " -> Collecting Packages files"
