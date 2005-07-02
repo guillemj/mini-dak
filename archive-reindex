@@ -83,6 +83,8 @@ for suite in $suite_list; do
     release $dists_dir/$suite \
     > $dists_dir/$suite/.Release
   mv -f $dists_dir/$suite/{.Release,Release}
+  gpg -a -u "$archive_maint" $archive_keyring -b \
+    -o $dists_dir/$suite/Release.gpg $dists_dir/$suite/Release
 done
 
 echo_time "-> Done."
