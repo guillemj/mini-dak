@@ -89,11 +89,9 @@ cat $cache_dir/changes.list | while read package suite arch version path; do
 
   if archive_link $changes_file $dest_dir; then
     log install "link_success $changes_file##*/}"
-    return 0
   else
     script_error "$?"
     log install "link_failed ${changes_file##*/}"
-    return 1
   fi
 done
 
