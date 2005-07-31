@@ -1,0 +1,91 @@
+#!/bin/bash
+#
+# $Id: archive-install 110 2005-06-13 23:59:07Z guillem $
+#
+# Copyright (C) 2003, 2004, 2005 Guillem Jover <guillem@debian.org>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software Foundation,
+# Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+#
+
+#
+# Requires: apt-utils
+#
+
+# Import library
+
+. archive-lib
+
+# Force multi-pool setting
+multipool=yes
+
+# message output
+
+script_error ()
+{
+  # FIXME: message should be nicer than that
+  log install "$1" | echo mail -s "Error in `basename $0`" $archive_maint
+}
+
+#
+# Main
+#
+
+move_arch=$1
+
+if [ -z "$move_arch" ]; then
+  echo "error: no arch specified"
+  exit 1
+fi
+
+cd $accepted_dir
+
+shopt -s nullglob
+
+echo_time "-> Hard linking to the new multi pool..."
+cat $cache_dir/changes.list | while read package suite arch version path; do
+  local archive_file=`changes_strip < $path`
+  local basepath=`dirname $path`
+  local basedir=${basepath#$archive_dir/}
+  local files=`echo "$archive_file" | fetch_files`
+  local package=`fetch_field "Source" < $archive_file`
+  local arches=`fetch_field "Architecture" < $archive_file`
+  local arch=`get_single_arch $archive_file`
+  local section=main
+  local dest_dir=`poolize_arch_name $package $arch`
+
+  if ! [ "$move_arch" = "$arch" ]
+    continue
+  fi
+
+  echo "-> $package : $arch"
+  echo " -> linking to $dest_dir"
+  continue
+
+  if [ ! -d "$dest_dir" ]; then
+    mkdir -p $dest_dir
+  fi
+
+  if archive_move $archive_file $dest_dir; then
+    log install "install_success ${archive_file##*/}"
+    return 0
+  else
+    script_error "$?"
+    log install "install_failed ${archive_file##*/}"
+    return 1
+  fi
+done
+
+cd - >/dev/null
+
