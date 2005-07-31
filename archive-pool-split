@@ -74,6 +74,7 @@ shopt -s nullglob
 echo_time "-> Hard linking to the new multi pool..."
 cat $cache_dir/changes.list | while read package suite arch version path; do
   changes_file="$path"
+  changes_dir=`dirname $path`
   dest_dir=`poolize_arch_name $package $arch`
 
   if ! [ "$move_arch" = "$arch" ]; then
@@ -86,12 +87,16 @@ cat $cache_dir/changes.list | while read package suite arch version path; do
     mkdir -p $dest_dir
   fi
 
+  cd $changes_dir
+
   if archive_link $changes_file $dest_dir; then
     log install "link_success ${changes_file##*/}"
   else
     script_error "$?"
     log install "link_failed ${changes_file##*/}"
   fi
+
+  cd - >/dev/null
 done
 
 cd - >/dev/null
