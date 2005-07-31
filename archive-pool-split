@@ -35,7 +35,6 @@ archive_link ()
 
   echo " -> linking to $dest_dir"
   echo "  -> $files"
-  return 0
 
   ln $changes_file "$dest_dir" 2>/dev/null
 
