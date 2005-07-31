@@ -27,9 +27,6 @@
 
 . archive-lib
 
-# Force multi-pool setting
-multipool=yes
-
 # message output
 
 script_error ()
@@ -44,12 +41,15 @@ script_error ()
 
 move_arch=$1
 
+# Force multi-pool setting
+multipool=yes
+
 if [ -z "$move_arch" ]; then
   echo "error: no arch specified"
   exit 1
 fi
 
-cd $accepted_dir
+cd $archive_dir
 
 shopt -s nullglob
 
@@ -58,11 +58,8 @@ cat $cache_dir/changes.list | while read package suite arch version path; do
   archive_file=`changes_strip < $path`
   basepath=`dirname $path`
   basedir=${basepath#$archive_dir/}
-  files=`echo "$archive_file" | fetch_files`
   package=`fetch_field "Source" < $archive_file`
-  arches=`fetch_field "Architecture" < $archive_file`
   arch=`get_single_arch $archive_file`
-  section=main
   dest_dir=`poolize_arch_name $package $arch`
 
   if ! [ "$move_arch" = "$arch" ]; then
