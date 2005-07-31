@@ -71,7 +71,7 @@ create_repo ()
   fi
 
   for suite in $suite_list; do
-     for section in $section_list; do
+    for section in $section_list; do
       for arch in $(get_suite_arches $suite); do
         if [ $arch = source ]; then
           path_dir=$dists_dir/$suite/$section/$arch
