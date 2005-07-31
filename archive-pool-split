@@ -65,7 +65,7 @@ cat $cache_dir/changes.list | while read package suite arch version path; do
   local section=main
   local dest_dir=`poolize_arch_name $package $arch`
 
-  if ! [ "$move_arch" = "$arch" ]
+  if ! [ "$move_arch" = "$arch" ]; then
     continue
   fi
 
