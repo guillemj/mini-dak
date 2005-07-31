@@ -29,23 +29,6 @@
 
 # file output
 
-get_single_arch ()
-{
-  local archive_file=$1
-  local arches=`fetch_field "Architecture" < $archive_file`
-
-  for arch in $arches; do
-    case $arch in
-      source|all)
-	continue
-	;;
-    esac
-
-    echo $arch
-    return 0
-  done
-}
-
 pool_install ()
 {
   local archive_file=$1

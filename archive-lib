@@ -77,6 +77,23 @@ get_arches ()
   echo $arches
 }
 
+get_single_arch ()
+{
+  local archive_file=$1
+  local arches=`fetch_field "Architecture" < $archive_file`
+
+  for arch in $arches; do
+    case $arch in
+      source|all)
+	continue
+	;;
+    esac
+
+    echo $arch
+    return 0
+  done
+}
+
 get_pool_dirs ()
 {
   if [ "$multipool" = "yes" ]; then
