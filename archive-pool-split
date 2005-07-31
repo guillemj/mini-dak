@@ -27,6 +27,25 @@
 
 . archive-lib
 
+archive_link ()
+{
+  local changes_file=$1
+  local dest_dir=$2
+  local files=`changes_strip < $changes_file | fetch_files`
+
+  echo " -> linking to $dest_dir"
+  echo "  -> $files"
+  return 0
+
+  ln $changes_file "$dest_dir" 2>/dev/null
+
+  if ln $files "$dest_dir"; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 # message output
 
 script_error ()
@@ -55,9 +74,7 @@ shopt -s nullglob
 
 echo_time "-> Hard linking to the new multi pool..."
 cat $cache_dir/changes.list | while read package suite arch version path; do
-  archive_file=`changes_strip < $path`
-  package=`echo "$archive_file" | fetch_field "Source"`
-  arch=`echo "$archive_file" | fetch_single_arch`
+  changes_file="$path"
   dest_dir=`poolize_arch_name $package $arch`
 
   if ! [ "$move_arch" = "$arch" ]; then
@@ -65,19 +82,17 @@ cat $cache_dir/changes.list | while read package suite arch version path; do
   fi
 
   echo "-> $package : $arch"
-  echo " -> linking to $dest_dir"
-  continue
 
   if [ ! -d "$dest_dir" ]; then
     mkdir -p $dest_dir
   fi
 
-  if archive_move $archive_file $dest_dir; then
-    log install "install_success ${archive_file##*/}"
+  if archive_link $changes_file $dest_dir; then
+    log install "link_success $changes_file##*/}"
     return 0
   else
     script_error "$?"
-    log install "install_failed ${archive_file##*/}"
+    log install "link_failed ${changes_file##*/}"
     return 1
   fi
 done
