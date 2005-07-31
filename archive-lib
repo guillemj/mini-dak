@@ -103,7 +103,7 @@ get_pool_dirs ()
     done
     echo "$pool_dirs"
   else
-    echo "$pool_dir"
+    echo "$pool_dir/"
   fi
 }
 
