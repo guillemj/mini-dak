@@ -55,15 +55,15 @@ shopt -s nullglob
 
 echo_time "-> Hard linking to the new multi pool..."
 cat $cache_dir/changes.list | while read package suite arch version path; do
-  local archive_file=`changes_strip < $path`
-  local basepath=`dirname $path`
-  local basedir=${basepath#$archive_dir/}
-  local files=`echo "$archive_file" | fetch_files`
-  local package=`fetch_field "Source" < $archive_file`
-  local arches=`fetch_field "Architecture" < $archive_file`
-  local arch=`get_single_arch $archive_file`
-  local section=main
-  local dest_dir=`poolize_arch_name $package $arch`
+  archive_file=`changes_strip < $path`
+  basepath=`dirname $path`
+  basedir=${basepath#$archive_dir/}
+  files=`echo "$archive_file" | fetch_files`
+  package=`fetch_field "Source" < $archive_file`
+  arches=`fetch_field "Architecture" < $archive_file`
+  arch=`get_single_arch $archive_file`
+  section=main
+  dest_dir=`poolize_arch_name $package $arch`
 
   if ! [ "$move_arch" = "$arch" ]; then
     continue
