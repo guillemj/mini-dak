@@ -59,7 +59,7 @@ cat $cache_dir/changes.list | while read package suite arch version path; do
   basepath=`dirname $path`
   basedir=${basepath#$archive_dir/}
   package=`fetch_field "Source" < $archive_file`
-  arch=`get_single_arch $archive_file`
+  arch=`get_single_arch < $archive_file`
   dest_dir=`poolize_arch_name $package $arch`
 
   if ! [ "$move_arch" = "$arch" ]; then
