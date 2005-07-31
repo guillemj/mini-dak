@@ -50,15 +50,8 @@ pool_install ()
 {
   local archive_file=$1
   local package=`fetch_field "Source" < $archive_file`
-  local dest_dir
-
-  if [ "$multipool" = "yes" ]; then
-    local arch=`get_single_arch $archive_file`
-
-    dest_dir=`poolize_arch_name $arch $package`
-  else
-    dest_dir=`poolize_package_name $package`
-  fi
+  local arch=`get_single_arch $archive_file`
+  local dest_dir=`poolize_arch_name $package $arch`
 
   if [ ! -d "$dest_dir" ]; then
     mkdir -p $dest_dir

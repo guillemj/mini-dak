@@ -32,7 +32,7 @@
 #
 
 echo_time "-> Regenerating .changes files list..."
-find $pool_dir -name '*.changes' | changes_canonic | \
+find $(get_pool_dirs) -name '*.changes' | changes_canonic | \
   sort > $cache_dir/changes.list
 
 echo_time "-> Regenerating file lists..."

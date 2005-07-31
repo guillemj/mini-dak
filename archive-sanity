@@ -33,15 +33,11 @@ echo "-> Doing sanity check over the archive"
 
 if [ $FIX = yes ]; then
   echo " -> Regenerating missing .archive files"
-  for changes in `find $pool_dir $accepted_dir -name '*.changes'`; do
+  for changes in `find $(get_pool_dirs) $accepted_dir -name '*.changes'`; do
     archive=${changes%changes}archive
     changes_strip < $changes > $archive
   done
 fi
-
-cd $pool_dir
-
-cd - >/dev/null
 
 cd $cache_dir
 

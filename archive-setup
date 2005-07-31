@@ -109,9 +109,9 @@ create_repo ()
   mkdir -p $quinn_dir
   mkdir -p $log_dir
 
-  if [ ! -d $pool_dir ]; then
-    mkdir -p $pool_dir
-  fi
+  for d in $(get_pool_dirs); do
+    mkdir -p $d
+  done
 }
 
 

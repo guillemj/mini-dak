@@ -64,6 +64,33 @@ fetch_secure_files ()
   done
 }
 
+get_arches ()
+{
+  local arches
+
+  for suite in $suite_list; do
+    arches="$arches $(get_suite_arches $suite)"
+  done
+
+  arches="$(echo $arches | tr ' ' '\n' | sort -u | sed '/source/d')"
+
+  echo $arches
+}
+
+get_pool_dirs ()
+{
+  if [ "$multipool" = "yes" ]; then
+    local pool_dirs
+
+    for arch in $(get_arches); do
+      pool_dirs="$pool_dirs $pool_dir-$arch"
+    done
+    echo "$pool_dirs"
+  else
+    echo "$pool_dir"
+  fi
+}
+
 get_suite_arches ()
 {
   local suite=$(canonic_suite $1)
@@ -133,7 +160,12 @@ poolize_arch_name()
   local arch=$2
   local section=main
   local hash_dir=`poolize_hash_name $package`
-  local dest_dir=$pool_dir/$arch/$section/$hash_dir/$package/
+
+  if [ "$multipool" = "yes" ]; then
+    local dest_dir=$pool_dir-$arch/$section/$hash_dir/$package/
+  else
+    local dest_dir=$pool_dir/$section/$hash_dir/$package/
+  fi
 
   echo $dest_dir
 }
