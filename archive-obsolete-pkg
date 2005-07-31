@@ -32,7 +32,7 @@ shopt -s nullglob
 for pkg do
   echo " -> package: $pkg"
 
-  srcdir=`poolize_name $pkg`
+  srcdir=`poolize_package_name $pkg`
   dstdir=$obsolete_dir/$pkg
 
   cd $srcdir
