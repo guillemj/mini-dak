@@ -64,23 +64,9 @@ fetch_secure_files ()
   done
 }
 
-get_arches ()
+fetch_single_arch ()
 {
-  local arches
-
-  for suite in $suite_list; do
-    arches="$arches $(get_suite_arches $suite)"
-  done
-
-  arches="$(echo $arches | tr ' ' '\n' | sort -u | sed '/source/d')"
-
-  echo $arches
-}
-
-get_single_arch ()
-{
-  local archive_file=$1
-  local arches=`fetch_field "Architecture" < $archive_file`
+  local arches=`fetch_field "Architecture"`
 
   for arch in $arches; do
     case $arch in
@@ -92,6 +78,19 @@ get_single_arch ()
     echo $arch
     return 0
   done
+}
+
+get_arches ()
+{
+  local arches
+
+  for suite in $suite_list; do
+    arches="$arches $(get_suite_arches $suite)"
+  done
+
+  arches="$(echo $arches | tr ' ' '\n' | sort -u | sed '/source/d')"
+
+  echo $arches
 }
 
 get_pool_dirs ()

@@ -53,15 +53,11 @@ cd $archive_dir
 
 shopt -s nullglob
 
-archive_file=$(mktemp) || { echo "error: creating temp file"; exit 1; }
-
 echo_time "-> Hard linking to the new multi pool..."
 cat $cache_dir/changes.list | while read package suite arch version path; do
-  changes_strip < $path > $archive_file
-  basepath=`dirname $path`
-  basedir=${basepath#$archive_dir/}
-  package=`fetch_field "Source" < $archive_file`
-  arch=`get_single_arch < $archive_file`
+  archive_file=`changes_strip < $path`
+  package=`echo "$archive_file" | fetch_field "Source"`
+  arch=`echo "$archive_file" | fetch_single_arch`
   dest_dir=`poolize_arch_name $package $arch`
 
   if ! [ "$move_arch" = "$arch" ]; then
@@ -87,6 +83,4 @@ cat $cache_dir/changes.list | while read package suite arch version path; do
 done
 
 cd - >/dev/null
-
-rm -f "$archive_file"
 
