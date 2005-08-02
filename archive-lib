@@ -74,7 +74,7 @@ fetch_single_arch ()
 filter_real_arches ()
 {
   local arches=$@
-  local real_arches=$(echo $arches | sed -re 's/(sources|all) ?//g')
+  local real_arches=$(echo $arches | sed -re 's/(source|all) ?//g')
 
   echo $real_arches
 }
@@ -87,9 +87,9 @@ get_arches ()
     arches="$arches $(get_suite_arches $suite)"
   done
 
-  arches="$(echo $arches | tr ' ' '\n' | sort -u | sed '/source/d')"
+  arches="$(echo $arches | tr ' ' '\n' | sort -u)"
 
-  echo $arches
+  echo $(filter_real_arches $arches)
 }
 
 get_pool_dirs ()
