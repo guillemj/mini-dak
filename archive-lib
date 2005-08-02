@@ -79,7 +79,7 @@ filter_real_arches ()
   echo $real_arches
 }
 
-get_arches ()
+get_archive_arches ()
 {
   local arches
 
@@ -97,7 +97,7 @@ get_pool_dirs ()
   if [ "$multipool" = "yes" ]; then
     local pool_dirs
 
-    for arch in $(get_arches); do
+    for arch in $(get_archive_arches); do
       pool_dirs="$pool_dirs $pool_dir-$arch"
     done
     echo "$pool_dirs"
