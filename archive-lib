@@ -68,16 +68,15 @@ fetch_single_arch ()
 {
   local arches=`fetch_field "Architecture"`
 
-  for arch in $arches; do
-    case $arch in
-      source|all)
-	continue
-	;;
-    esac
+  echo $(filter_real_arches $arches)
+}
 
-    echo $arch
-    return 0
-  done
+filter_real_arches ()
+{
+  local arches=$@
+  local real_arches=$(echo $arches | sed -re 's/(sources|all) ?//g')
+
+  echo $real_arches
 }
 
 get_arches ()
