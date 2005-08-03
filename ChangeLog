@@ -1,0 +1,12 @@
+2005-08-03  Guillem Jover  <guillem@debian.org>
+
+	* ChangeLog: New file.
+	* archive.conf (multipool): Set to yes.
+	* archive-lib (get_pool_dir_arch): New function.
+	(changes_canonic): Use filter_real_arches.
+	* archive-reindex: Create changes file lists per arch. Generate a
+	changes.list for backward compatibility. Split deb and udeb in the
+	file list generation. Create file lists from each arch changes list.
+	Remove handling of arch all file lists. Remove the Release files
+	just before moving the new one on top.
+

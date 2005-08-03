@@ -106,6 +106,17 @@ get_pool_dirs ()
   fi
 }
 
+get_pool_dir_arch ()
+{
+  local arch=$1
+
+  if [ "$multipool" = "yes" ]; then
+    echo "$pool_dir-$arch/"
+  else
+    echo "$pool_dir/"
+  fi
+}
+
 get_suite_arches ()
 {
   local suite=$(canonic_suite $1)
@@ -196,7 +207,7 @@ changes_canonic ()
     suite=`echo "$archive" | fetch_field "Distribution"`
     arches=`echo "$archive" | fetch_field "Architecture"`
 
-    for arch in $arches; do
+    for arch in $(filter_real_arches $arches); do
       printf "%s %s %s %s %s\n" $package $suite $arch $version $f_changes
     done
   done

@@ -31,42 +31,43 @@
 # Main
 #
 
-echo_time "-> Regenerating .changes files list..."
-find $(get_pool_dirs) -name '*.changes' | changes_canonic | \
-  sort > $cache_dir/changes.list
-
-echo_time "-> Regenerating file lists..."
-cat $cache_dir/changes.list | while read package suite arch version path; do
-  archive_file=`changes_strip < $path`
-  basepath=`dirname $path`
-  basedir=${basepath#$archive_dir/}
-  files=`echo "$archive_file" | fetch_files`
-  if [ $arch != source ]; then
-    (
-      echo "$files" | grep "_\($arch\|all\)\.u\?deb" | while read file; do
-        echo "$basedir/$file"
-      done
-    ) >> $cache_dir/files_${suite}_$arch.list.new
-  fi
+echo_time "-> Regenerating .changes files lists..."
+for arch in $(get_archive_arches); do
+  echo_time " -> Regenerating .changes files list... [$arch]"
+  find $(get_pool_dir_arch $arch) -name '*.changes' | changes_canonic | \
+    sort > $cache_dir/changes_$arch.list
 done
 
-#echo_time "-> Removing existing file lists..."
-#rm -f $cache_dir/files_*_*.list
+# XXX: Keep backward compatibility
+echo_time " -> Regenerating .changes files list... [merged]"
+cat $cache_dir/changes_*.list | sort > $cache_dir/changes.list
+
+echo_time "-> Regenerating file lists..."
+for arch in $(get_archive_arches); do
+  echo_time " -> Regenerating file list.. [$arch]"
+  cat $cache_dir/changes_$arch.list | while read package suite arch version path; do
+    archive_file=`changes_strip < $path`
+    basepath=`dirname $path`
+    basedir=${basepath#$archive_dir/}
+    files=`echo "$archive_file" | fetch_files`
+    filepaths=`echo "$files" | sed -e "s:^ *:$basedir/:"`
+
+    echo "$filepaths" | grep "_\($arch\|all\)\.deb" \
+      >> $cache_dir/files_${suite}_$arch.list.new
+    echo "$filepaths" | grep "_\($arch\|all\)\.udeb" \
+      >> $cache_dir/files_${suite}_$arch.di.list.new
+  done
+done
 
 echo_time "-> Moving new file lists into place..."
 for suite in $suite_list; do
-  touch $cache_dir/files_${suite}_all.list.new
-  mv -f $cache_dir/files_${suite}_all.list.new \
-        $cache_dir/files_${suite}_all.list
-
   for arch in $(get_suite_arches $suite); do
-    if [ $arch != source ]; then
       touch $cache_dir/files_${suite}_$arch.list.new
       mv -f $cache_dir/files_${suite}_$arch.list.new \
             $cache_dir/files_${suite}_$arch.list
-      cat $cache_dir/files_${suite}_all.list >> \
-          $cache_dir/files_${suite}_$arch.list
-    fi
+      touch $cache_dir/files_${suite}_$arch.di.list.new
+      mv -f $cache_dir/files_${suite}_$arch.di.list.new \
+            $cache_dir/files_${suite}_$arch.di.list
   done
 done
 
@@ -75,13 +76,13 @@ apt-ftparchive generate $apt_config
 
 echo_time "-> Regenerating Releases files..."
 for suite in $suite_list; do
-  rm -f $dists_dir/$suite/Release
   apt-ftparchive -c $apt_config \
     -o APT::FTPArchive::Release::Suite="$suite" \
     -o APT::FTPArchive::Release::Architectures="$(get_suite_arches $suite)" \
     -o APT::FTPArchive::Release::Components="$(get_suite_sections $suite)" \
     release $dists_dir/$suite \
     > $dists_dir/$suite/.Release
+  rm -f $dists_dir/$suite/Release
   mv -f $dists_dir/$suite/{.Release,Release}
   gpg -a --yes -u "$archive_maint" $archive_keyring -b \
     -o $dists_dir/$suite/Release.gpg $dists_dir/$suite/Release
