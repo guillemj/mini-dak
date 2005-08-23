@@ -77,6 +77,12 @@ echo " -> Collecting hurd-i386 binary files"
 wget -N $debian_archive/dists/unstable/main/binary-hurd-i386/Packages.bz2 -O Packages-unstable.hurd-i386.bz2
 bunzip2 -c Packages-unstable.hurd-i386.bz2 > Packages-unstable.hurd-i386
 
+echo " -> Collecting override files"
+d=sid
+for c in extra.main mian.debian-installer main main.src; do
+  wget -N $debian_archive/indices/override.$d.$c.gz -O $indices_dir/override.$d.$c.gz
+done
+
 echo " -> Collecting Packages files"
 for arch in $arch_list_unreleased; do
   if [ $arch != source ]; then
