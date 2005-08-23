@@ -1,3 +1,8 @@
+2005-08-23  Guillem Jover  <guillem@debian.org>
+
+	* archive-obsolete: Initial implementation of splitted pool
+	obsoleting.
+
 2005-08-03  Guillem Jover  <guillem@debian.org>
 
 	* ChangeLog: New file.

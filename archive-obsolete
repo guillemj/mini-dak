@@ -27,23 +27,28 @@ LANG=C
 
 cd $cache_dir
 
-cat changes.list | changes_newest > ch_new.list
-sort changes.list ch_new.list | uniq -u > ch_obs.list
-sort ch_new.list ch_obs.list > ch_full.list
+echo "-> Generating obsolete lists..."
+for arch in $(get_archive_arches); do
+  echo " -> Generating obsolete lists... [$arch]"
+  cat changes_$arch.list | changes_newest > changes_${arch}_new.list
+  sort changes_$arch.list changes_${arch}_new.list | \
+    uniq -u > changes_${arch}_obs.list
+  sort changes_${arch}_new.list changes_${arch}_obs.list > \
+    changes_${arch}_full.list
 
-if ! cmp -s changes.list ch_full.list; then
-  echo "-> Obsolete list ok, proceeding ..."
-  cat ch_obs.list | while read package suite arch version changes_file; do
-    srcfiles=`changes_strip < $changes_file | fetch_files`
+  if cmp -s changes_$arch.list changes_${arch}_full.list; then
+    echo "  -> Ok: Obsolete list [$arch], proceeding ..."
+    cat changes_${arch}_obs.list | while read package suite arch version changes_file; do
+      files=`changes_strip < $changes_file | fetch_files`
+      binfiles=`echo "$srcfiles" | grep 'deb$'`
 
-    # get arch files
-    # get all files
-    #  if other arches
-
-    echo $changes_file $srcfiles $dstdir
-  done
-  echo "-> Done."
-else
-  echo "-> Obsolete list error, manual intervetion needed."
-fi
+      echo "  -> Obsoleting: $package-$version ($suite) [$arch]"
+      echo "   -> Changes file: ${changes_file##*/}"
+      echo "   -> Binary files: $files"
+    done
+  else
+    echo "  -> Error: Obsolete list [$arch], manual intervetion needed."
+  fi
+done
+echo "-> Done."
 
