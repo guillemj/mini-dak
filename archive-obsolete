@@ -30,9 +30,9 @@ cd $cache_dir
 echo "-> Generating obsolete lists..."
 for arch in $(get_archive_arches); do
   echo " -> Generating obsolete lists... [$arch]"
-  cat changes_$arch.list | changes_newest > changes_${arch}_new.list
-  sort changes_$arch.list changes_${arch}_new.list | \
-    uniq -u > changes_${arch}_obs.list
+  cat changes_$arch.list | changes_obsolete > changes_${arch}_obs.list
+  sort changes_$arch.list changes_${arch}_obs.list | \
+    uniq -u > changes_${arch}_new.list
   sort changes_${arch}_new.list changes_${arch}_obs.list > \
     changes_${arch}_full.list
 

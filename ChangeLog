@@ -1,3 +1,8 @@
+2005-08-24  Guillem Jover  <guillem@debian.org>
+
+	* archive-obsolete: Use changes_obsolete instead of changes_newest,
+	and dump to the proper list files.
+
 2005-08-23  Guillem Jover  <guillem@debian.org>
 
 	* archive-quinn: Add override retrieval support.
