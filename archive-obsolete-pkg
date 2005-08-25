@@ -35,9 +35,13 @@ for pkg do
   srcdir=`poolize_package_name $pkg`
   dstdir=$obsolete_dir/$pkg
 
-  cd $srcdir
+  cd $srcdir || exit 1
 
-  for changes_file in $pkg*.changes; do
+  changes=`ls $pkg*.changes | sort -n`
+  echo " -> full list:"
+  echo "$changes"
+
+  for changes_file in $changes; do
     srcfiles=`changes_strip < $changes_file | fetch_files`
 
     echo "  -> $changes_file"

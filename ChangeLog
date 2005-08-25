@@ -1,3 +1,8 @@
+2005-08-25  Guillem Jover  <guillem@debian.org>
+
+	* archive-obsolete-pkg: List all changes files prior to asking for
+	individual removal.
+
 2005-08-24  Guillem Jover  <guillem@debian.org>
 
 	* archive-obsolete: Use changes_obsolete instead of changes_newest,
