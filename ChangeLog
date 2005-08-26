@@ -1,3 +1,8 @@
+2005-08-26  Guillem Jover  <guillem@debian.org>
+
+	* archive-obsolete: Specify that the obsolete list is of packages.
+	Added spaces before the ellipsis. Fix a typo.
+
 2005-08-25  Guillem Jover  <guillem@debian.org>
 
 	* archive-obsolete-pkg: List all changes files prior to asking for

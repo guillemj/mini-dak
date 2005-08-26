@@ -27,9 +27,9 @@ LANG=C
 
 cd $cache_dir
 
-echo "-> Generating obsolete lists..."
+echo "-> Generating obsolete packages lists ..."
 for arch in $(get_archive_arches); do
-  echo " -> Generating obsolete lists... [$arch]"
+  echo " -> Generating obsolete packages list ... [$arch]"
   cat changes_$arch.list | changes_obsolete > changes_${arch}_obs.list
   sort changes_$arch.list changes_${arch}_obs.list | \
     uniq -u > changes_${arch}_new.list
@@ -37,7 +37,7 @@ for arch in $(get_archive_arches); do
     changes_${arch}_full.list
 
   if cmp -s changes_$arch.list changes_${arch}_full.list; then
-    echo "  -> Ok: Obsolete list [$arch], proceeding ..."
+    echo "  -> Ok: Obsolete packages list [$arch], proceeding ..."
     cat changes_${arch}_obs.list | while read package suite arch version changes_file; do
       files=`changes_strip < $changes_file | fetch_files`
       binfiles=`echo "$srcfiles" | grep 'deb$'`
@@ -47,7 +47,7 @@ for arch in $(get_archive_arches); do
       echo "   -> Binary files: $files"
     done
   else
-    echo "  -> Error: Obsolete list [$arch], manual intervetion needed."
+    echo "  -> Error: Obsolete packages list [$arch], manual intervention needed."
   fi
 done
 echo "-> Done."
