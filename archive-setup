@@ -58,9 +58,9 @@ HERE
 	  FileList		"files_${suite}_\$(ARCH).list";
 	  Sections		"$(get_suite_sections $suite)";
 	  Architectures		"$(get_suite_arches $suite)";
-	  BinOverride		"override.$suite.main.gz";
-	  SrcOverride		"override.$suite.main.src.gz";
-	  ExtraOverride		"override.$suite.extra.main.gz";
+	  BinOverride		"override.$suite.main";
+	  SrcOverride		"override.$suite.main.src";
+	  ExtraOverride		"override.$suite.extra.main";
 	};
 
 HERE

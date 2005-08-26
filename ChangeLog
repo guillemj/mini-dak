@@ -1,5 +1,12 @@
 2005-08-26  Guillem Jover  <guillem@debian.org>
 
+	* archive-setup (create_apt_config): Remove gzip extension from
+	override files.
+	* archive-quinn: Unzip compressed override files and symlink
+	those instead.
+
+2005-08-26  Guillem Jover  <guillem@debian.org>
+
 	* archive-setup (create_apt_config): Add override file variables.
 	* archive-quinn: Link unreleased overrides to the unstable ones.
 
