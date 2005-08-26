@@ -82,6 +82,7 @@ d=sid
 a=unstable
 for c in main main.src main.debian-installer extra.main; do
   wget -N $debian_archive/indices/override.$d.$c.gz -O $indices_dir/override.$a.$c.gz
+  ln -s $indices_dir/override.$a.$c.gz $indices_dir/override.unreleased.$c.gz
 done
 
 echo " -> Collecting Packages files"

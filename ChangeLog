@@ -1,5 +1,10 @@
 2005-08-26  Guillem Jover  <guillem@debian.org>
 
+	* archive-setup (create_apt_config): Add override file variables.
+	* archive-quinn: Link unreleased overrides to the unstable ones.
+
+2005-08-26  Guillem Jover  <guillem@debian.org>
+
 	* archive-obsolete: Specify that the obsolete list is of packages.
 	Added spaces before the ellipsis. Fix a typo.
 
