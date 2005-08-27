@@ -1,3 +1,7 @@
+2005-08-27  Guillem Jover  <guillem@debian.org>
+
+	* archive-obsolete: Implement .changes content obsoleting.
+
 2005-08-26  Guillem Jover  <guillem@debian.org>
 
 	* archive-quinn: Force gunzipping the override files.

@@ -40,12 +40,21 @@ for arch in $(get_archive_arches); do
     echo "  -> Ok: Obsolete packages list [$arch], proceeding ..."
     cat changes_${arch}_obs.list | while read package suite arch version changes_file; do
       files=`changes_strip < $changes_file | fetch_files`
-      binfiles=`echo "$srcfiles" | grep 'deb$'`
+      binfiles=`echo "$files" | grep 'deb$'`
+      orig_dir=`dirname $changes_file`
+      dest_dir=$obsolete_dir/`date -I`/$package/
 
       echo "  -> Obsoleting: $package-$version ($suite) [$arch]"
       echo "   -> Changes file: ${changes_file##*/}"
       echo "   -> Binary files: $files"
-    done
+
+      (
+      cd $orig_dir
+      mkdir -p $dest_dir
+      mv -f $changes_file "$dest_dir" 2>/dev/null
+      mv $files "$dest_dir" || echo "   -> Error: Obsoleting package."
+      )
+     done
   else
     echo "  -> Error: Obsolete packages list [$arch], manual intervention needed."
   fi
