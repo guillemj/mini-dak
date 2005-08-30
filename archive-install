@@ -77,6 +77,7 @@ cd - >/dev/null
 
 if [ "$INSTALLED" = "yes" ]; then
   ./archive-lists
+  ./archive-obsolete
   ./archive-reindex
   ./archive-quinn
 fi

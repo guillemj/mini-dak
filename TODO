@@ -1,7 +1,6 @@
 TODO
 ====
 
- * automatic obsoleting
  * move crontab and config to an example section
  * optimize archive-reindex speed (find and parse .changes)
  * check if size matches for files uploaded

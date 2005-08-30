@@ -1,5 +1,14 @@
 2005-08-30  Guillem Jover  <guillem@debian.org>
 
+	* archive-lib (changes_newest): Remove buggy function.
+	(changes_obsolete): Do not compare the suite as we assume that there
+	are only unstable and unreleased, mergerd anyway at obsoleting time.
+	* archive-stats: Disable line using changes_newest.
+	* archive-install: Call archive-obsolete after archive-lists.
+	* TODO: Remove auto obsoleting item.
+
+2005-08-30  Guillem Jover  <guillem@debian.org>
+
 	* archive-obsolete: Replace simple echos with log.
 
 2005-08-30  Guillem Jover  <guillem@debian.org>

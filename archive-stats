@@ -25,5 +25,5 @@
 
 echo "-> Doing archive statistics"
 
-cat $cache_dir/changes.list | changes_newest > $cache_dir/stats.list
+#cat $cache_dir/changes.list | changes_newest > $cache_dir/stats.list
 
