@@ -1,5 +1,9 @@
 2005-08-30  Guillem Jover  <guillem@debian.org>
 
+	* archive-obsolete: Replace simple echos with log.
+
+2005-08-30  Guillem Jover  <guillem@debian.org>
+
 	* archive-reindex: Move .changes generation code to ...
 	* archive-lists: ... here. New file.
 	* archive-quinn: Use get_suite_arches instead of the private variable

@@ -27,9 +27,9 @@ LANG=C
 
 cd $cache_dir
 
-echo "-> Generating obsolete packages lists ..."
+log obsolete "-> Generating obsolete packages lists ..."
 for arch in $(get_archive_arches); do
-  echo " -> Generating obsolete packages list ... [$arch]"
+  log obsolete " -> Generating obsolete packages list ... [$arch]"
   cat changes_$arch.list | changes_obsolete > changes_${arch}_obs.list
   sort changes_$arch.list changes_${arch}_obs.list | \
     uniq -u > changes_${arch}_new.list
@@ -37,27 +37,27 @@ for arch in $(get_archive_arches); do
     changes_${arch}_full.list
 
   if cmp -s changes_$arch.list changes_${arch}_full.list; then
-    echo "  -> Ok: Obsolete packages list [$arch], proceeding ..."
+    log obsolete "  -> Ok: Obsolete packages list [$arch], proceeding ..."
     cat changes_${arch}_obs.list | while read package suite arch version changes_file; do
       files=`changes_strip < $changes_file | fetch_files`
       binfiles=`echo "$files" | grep 'deb$'`
       orig_dir=`dirname $changes_file`
       dest_dir=$obsolete_dir/`date -I`/$package/
 
-      echo "  -> Obsoleting: $package-$version ($suite) [$arch]"
-      echo "   -> Changes file: ${changes_file##*/}"
-      echo "   -> Binary files: $files"
+      log obsolete "  -> Obsoleting: $package-$version ($suite) [$arch]"
+      log obsolete "   -> Changes file: ${changes_file##*/}"
+      log obsolete "   -> Binary files: $files"
 
       (
       cd $orig_dir
       mkdir -p $dest_dir
       mv -f $changes_file "$dest_dir" 2>/dev/null
-      mv $files "$dest_dir" || echo "   -> Error: Obsoleting package."
+      mv $files "$dest_dir" || log obsolete "   -> Error: Obsoleting package."
       )
      done
   else
-    echo "  -> Error: Obsolete packages list [$arch], manual intervention needed."
+    log obsolete "  -> Error: Obsolete packages list [$arch], manual intervention needed."
   fi
 done
-echo "-> Done."
+log obsolete "-> Done."
 
