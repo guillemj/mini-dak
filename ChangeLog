@@ -1,5 +1,14 @@
 2005-08-30  Guillem Jover  <guillem@debian.org>
 
+	* archive-reindex: Move .changes generation code to ...
+	* archive-lists: ... here. New file.
+	* archive-quinn: Use get_suite_arches instead of the private variable
+	name. Move retrieval of official package lists to ...
+	* archive-lists: ... here.
+	* archive-install: Call archive-lists before archive-reindex.
+
+2005-08-30  Guillem Jover  <guillem@debian.org>
+
 	* archive-setup: Implement debian-installer repo support.
 	* TODO: Remove debian-installer item.
 

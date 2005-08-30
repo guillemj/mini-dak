@@ -31,17 +31,6 @@
 # Main
 #
 
-echo_time "-> Regenerating .changes files lists..."
-for arch in $(get_archive_arches); do
-  echo_time " -> Regenerating .changes files list... [$arch]"
-  find $(get_pool_dir_arch $arch) -name '*.changes' | changes_canonic | \
-    sort > $cache_dir/changes_$arch.list
-done
-
-# XXX: Keep backward compatibility
-echo_time " -> Regenerating .changes files list... [merged]"
-cat $cache_dir/changes_*.list | sort > $cache_dir/changes.list
-
 echo_time "-> Regenerating file lists..."
 for arch in $(get_archive_arches); do
   echo_time " -> Regenerating file list.. [$arch]"

@@ -68,35 +68,17 @@ sort_by_section()
 
 cd $cache_dir
 
-echo "-> Generating Quinn-Diff stats"
+echo_time "-> Generating quinn-diff stats ..."
 
-echo " -> Collecting Sources files"
-wget -N $debian_archive/dists/unstable/main/source/Sources.bz2
-bunzip2 -c Sources.bz2 > Sources
-echo " -> Collecting hurd-i386 binary files"
-wget -N $debian_archive/dists/unstable/main/binary-hurd-i386/Packages.bz2 -O Packages-unstable.hurd-i386.bz2
-bunzip2 -c Packages-unstable.hurd-i386.bz2 > Packages-unstable.hurd-i386
-
-echo " -> Collecting override files"
-d=sid
-a=unstable
-for c in main main.src main.debian-installer extra.main; do
-  wget -N $debian_archive/indices/override.$d.$c.gz -O $indices_dir/override.$a.$c.gz
-  gunzip -f $indices_dir/override.$a.$c.gz
-  ln -s $indices_dir/override.$a.$c $indices_dir/override.unreleased.$c
-done
-
-echo " -> Collecting Packages files"
-for arch in $arch_list_unreleased; do
+for arch in $(get_suite_arches unreleased); do
   if [ $arch != source ]; then
-    echo "  -> Architecture: $arch"
-    cat $dists_dir/unreleased/main/binary-$arch/Packages > Packages.$arch
-    if [ $arch = hurd-i386 ]; then
-      cat Packages-unstable.hurd-i386 >> Packages.$arch
-    fi
+    echo_time " -> Generating quinn-diff stats for [$arch] ..."
+    # FIXME: Move this to the setup phase.
     mkdir -p $quinn_dir/unstable
     sort_by_priority -A$arch -p Packages.$arch -i > $quinn_dir/unstable/by_priority-$arch.txt
     sort_by_section -A$arch -p Packages.$arch -i > $quinn_dir/unstable/by_section-$arch.txt
   fi
 done
+
+echo_time "-> Done.
 

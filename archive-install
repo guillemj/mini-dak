@@ -76,6 +76,7 @@ done
 cd - >/dev/null
 
 if [ "$INSTALLED" = "yes" ]; then
+  ./archive-lists
   ./archive-reindex
   ./archive-quinn
 fi
