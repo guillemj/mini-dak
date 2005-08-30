@@ -1,5 +1,13 @@
 2005-08-30  Guillem Jover  <guillem@debian.org>
 
+	* archive-lists: Change dir to cache_dir to fix files not found. Move
+	changes lists generation to ...
+	* archive-changes-lists: ... here.
+	* archive-install: Call archive-changes-lists before and after
+	archive-obsolete.
+
+2005-08-30  Guillem Jover  <guillem@debian.org>
+
 	* archive-lib (changes_newest): Remove buggy function.
 	(changes_obsolete): Do not compare the suite as we assume that there
 	are only unstable and unreleased, mergerd anyway at obsoleting time.

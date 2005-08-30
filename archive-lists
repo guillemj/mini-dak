@@ -27,17 +27,6 @@
 # Main
 #
 
-echo_time "-> Collecting .changes files lists..."
-for arch in $(get_archive_arches); do
-  echo_time " -> Collecting .changes files list... [$arch]"
-  find $(get_pool_dir_arch $arch) -name '*.changes' | changes_canonic | \
-    sort > $cache_dir/changes_$arch.list
-done
-
-# XXX: Keep backward compatibility
-echo_time " -> Collecting .changes files list... [merged]"
-cat $cache_dir/changes_*.list | sort > $cache_dir/changes.list
-
 echo_time "-> Collecting files"
 
 echo_time " -> Collecting override files"
@@ -48,6 +37,8 @@ for c in main main.src main.debian-installer extra.main; do
   gunzip -f $indices_dir/override.$a.$c.gz
   ln -s $indices_dir/override.$a.$c $indices_dir/override.unreleased.$c
 done
+
+cd $cache_dir
 
 echo_time " -> Collecting Sources files"
 wget -N $debian_archive/dists/unstable/main/source/Sources.bz2
