@@ -1,5 +1,10 @@
 2005-08-30  Guillem Jover  <guillem@debian.org>
 
+	* archive-setup: Implement debian-installer repo support.
+	* TODO: Remove debian-installer item.
+
+2005-08-30  Guillem Jover  <guillem@debian.org>
+
 	* archive-setup: Do not touch dummy override files. Always create the
 	indices dir.
 

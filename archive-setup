@@ -27,7 +27,7 @@ create_apt_config ()
 {
   cat > $apt_config <<-HERE
 	Default {
-	  Packages::Extensions	".deb .udeb";
+	  Packages::Extensions	".deb";
 	  Packages::Compress	". gzip bzip2";
 	  Sources::Compress	". gzip bzip2";
 	};
@@ -58,9 +58,20 @@ HERE
 	  FileList		"files_${suite}_\$(ARCH).list";
 	  Sections		"$(get_suite_sections $suite)";
 	  Architectures		"$(get_suite_arches $suite)";
-	  BinOverride		"override.$suite.main";
+	  BinOverride		"override.$suite.\$(SECTION)";
+	  SrcOverride		"override.$suite.\$(SECTION).src";
+	  ExtraOverride		"override.$suite.extra.\$(SECTION)";
+	};
+
+	Tree "dists/$suite/main" {
+	  FileList		"files_${suite}_\$(ARCH).di.list";
+	  Sections		"debian-installer";
+	  Architectures		"$(get_suite_arches $suite)";
+	  BinOverride		"override.$suite.main.\$(SECTION)";
 	  SrcOverride		"override.$suite.main.src";
-	  ExtraOverride		"override.$suite.extra.main";
+	  BinCacheDB		"packages-\$(SECTION)-\$(ARCH).db";
+	  Packages::Extensions	".udeb";
+	  Contents		" ";
 	};
 
 HERE
@@ -80,6 +91,7 @@ create_repo ()
           path_dir=$dists_dir/$suite/$section/$arch
         else
           path_dir=$dists_dir/$suite/$section/binary-$arch
+	  mkdir -p $dists_dir/$suite/$section/debian-installer/binary-$arch
         fi
         mkdir -p $path_dir
         cat > $path_dir/Release <<-HERE
