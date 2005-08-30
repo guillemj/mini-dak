@@ -1,3 +1,8 @@
+2005-08-30  Guillem Jover  <guillem@debian.org>
+
+	* archive-setup: Do not touch dummy override files. Always create the
+	indices dir.
+
 2005-08-27  Guillem Jover  <guillem@debian.org>
 
 	* archive-obsolete: Implement .changes content obsoleting.

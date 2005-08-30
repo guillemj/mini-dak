@@ -96,12 +96,7 @@ create_repo ()
   done
 
   mkdir -p $cache_dir
-
-  if [ ! -d $indices_dir ]; then
-    mkdir -p $indices_dir
-    touch $indices_dir/override
-    touch $indices_dir/override.extra
-  fi
+  mkdir -p $indices_dir
 
   mkdir -p $queue_dir
   mkdir -p $unchecked_dir
