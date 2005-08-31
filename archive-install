@@ -79,7 +79,6 @@ if [ "$INSTALLED" = "yes" ]; then
   ./archive-lists
   ./archive-changes-lists
   ./archive-obsolete
-  ./archive-changes-lists
   ./archive-reindex
   ./archive-quinn
 fi

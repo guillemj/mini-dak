@@ -55,6 +55,8 @@ for arch in $(get_archive_arches); do
       mv $files "$dest_dir" || log obsolete "   -> Error: Obsoleting package."
       )
      done
+    log obsolete "  -> Updating obsolete packages list [$arch] ..."
+    cp -f changes_${arch}_new.list changes_${arch}.list
   else
     log obsolete "  -> Error: Obsolete packages list [$arch], manual intervention needed."
   fi

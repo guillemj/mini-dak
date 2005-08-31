@@ -1,5 +1,11 @@
 2005-08-31  Guillem Jover  <guillem@debian.org>
 
+	* archive-install: Remove archive-changes-lists call after
+	archive-obsolete.
+	* archive-obsolete: Update .changes files list after obsoleting.
+
+2005-08-31  Guillem Jover  <guillem@debian.org>
+
 	* archive-lists: Force symlinking the override files.
 
 2005-08-31  Guillem Jover  <guillem@debian.org>
