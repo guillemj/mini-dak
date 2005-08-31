@@ -1,5 +1,9 @@
 2005-08-31  Guillem Jover  <guillem@debian.org>
 
+	* archive-lists: Force symlinking the override files.
+
+2005-08-31  Guillem Jover  <guillem@debian.org>
+
 	* archive-lists: Make wget quiet.
 
 2005-08-31  Guillem Jover  <guillem@debian.org>
