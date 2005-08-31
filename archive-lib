@@ -223,6 +223,8 @@ changes_obsolete ()
        [ "$arch" = "$g_arch" ]; then
       if dpkg --compare-versions $g_version lt $version; then
         printf "%s %s %s %s %s\n" $g_package $g_suite $g_arch $g_version $g_path
+      else
+        printf "%s %s %s %s %s\n" $package $suite $arch $version $path
       fi
     fi
     g_package=$package

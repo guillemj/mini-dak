@@ -1,3 +1,8 @@
+2005-08-31  Guillem Jover  <guillem@debian.org>
+
+	* archive-lib (changes_obsolete): Print the smallest package version
+	in the else case.
+
 2005-08-30  Guillem Jover  <guillem@debian.org>
 
 	* archive-lists: Change dir to cache_dir to fix files not found. Move
