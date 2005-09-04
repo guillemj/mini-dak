@@ -80,5 +80,5 @@ for arch in $(get_suite_arches unreleased); do
   fi
 done
 
-echo_time "-> Done.
+echo_time "-> Done."
 

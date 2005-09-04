@@ -1,3 +1,7 @@
+2005-09-04  Guillem Jover  <guillem@debian.org>
+
+	* archive-quinn: Add missing " at the final echo_time.
+
 2005-08-31  Guillem Jover  <guillem@debian.org>
 
 	* archive-install: Remove archive-changes-lists call after
