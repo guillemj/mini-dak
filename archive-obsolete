@@ -30,9 +30,10 @@ cd $cache_dir
 log obsolete "-> Generating obsolete packages lists ..."
 for arch in $(get_archive_arches); do
   log obsolete " -> Generating obsolete packages list ... [$arch]"
-  cat changes_$arch.list | changes_obsolete > changes_${arch}_obs.list
-  sort changes_$arch.list changes_${arch}_obs.list | \
-    uniq -u > changes_${arch}_new.list
+  cat changes_$arch.list | changes_obsolete | uniq > \
+    changes_${arch}_obs.list
+  sort changes_$arch.list changes_${arch}_obs.list | uniq -u > \
+    changes_${arch}_new.list
   sort changes_${arch}_new.list changes_${arch}_obs.list > \
     changes_${arch}_full.list
 
