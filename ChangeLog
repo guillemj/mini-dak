@@ -1,3 +1,7 @@
+2005-09-26  Guillem Jover  <guillem@debian.org>
+
+	* TODO: Add subversion Id keyword.
+
 2005-09-06  Guillem Jover  <guillem@debian.org>
 
 	* archive-obsolete: Pass changes_obsolete output through uniq.
