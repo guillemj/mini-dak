@@ -102,6 +102,10 @@ create_repo ()
 		Label: $archive_url
 		Architecture: $arch
 	HERE
+	# FIXME: hardcoded check
+	if [ $suite = experimental ]; then
+		echo "NotAutomatic: yes" >> $path_dir/Release
+	fi
         files_owner_perms $path_dir/Release
       done
     done

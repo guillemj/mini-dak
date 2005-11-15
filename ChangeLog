@@ -1,5 +1,10 @@
 2005-11-15  Guillem Jover  <guillem@debian.org>
 
+	* archive-setup (create_repo): Set NoAutomatic to yes if the suite
+	is experimental (should be generalized afterwards).
+
+2005-11-15  Guillem Jover  <guillem@debian.org>
+
 	* archive.conf (suite_list): Add experimental.
 	(arch_list_experimental): New variable.
 	* archive-lists: Symlink overrides for experimental from sid.
