@@ -1,3 +1,12 @@
+2005-11-15  Guillem Jover  <guillem@debian.org>
+
+	* archive.conf (suite_list): Add experimental.
+	(arch_list_experimental): New variable.
+	* archive-lists: Symlink overrides for experimental from sid.
+	* archive-lib (changes_obsolete): Compare suites again (although this
+	makes obsoleting from unreleased in relation to unstable not work
+	anymore).
+
 2005-09-26  Guillem Jover  <guillem@debian.org>
 
 	* TODO: Add subversion Id keyword.
