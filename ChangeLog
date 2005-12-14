@@ -1,3 +1,8 @@
+2005-12-14  Guillem Jover  <guillem@debian.org>
+
+	* archive-lib (poolize_hash_name): Optimize by using only one s///.
+	Thanks to Adeodato Simó <adeodato@debian.org>.
+
 2005-11-15  Guillem Jover  <guillem@debian.org>
 
 	* archive-setup (create_repo): Set NoAutomatic to yes if the suite

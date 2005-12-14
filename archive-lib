@@ -162,11 +162,7 @@ canonic_suite()
 
 poolize_hash_name()
 {
-  local name=$1
-  local hash_dir=`echo $1 | \
-    sed -e 's/^\(lib.\).*$/\1/;/^lib/q;s/^\(.\).*$/\1/'`
-
-  echo $hash_dir
+  echo $1 | sed -e 's/^\(\(lib\)\?.\).*$/\1/'
 }
 
 poolize_package_name()
