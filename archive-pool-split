@@ -67,6 +67,9 @@ if [ -z "$move_arch" ]; then
   exit 1
 fi
 
+echo_time "-> Merging .changes files list..."
+cat $cache_dir/changes_*.list | sort > $cache_dir/changes.list
+
 cd $archive_dir
 
 shopt -s nullglob

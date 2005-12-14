@@ -34,9 +34,5 @@ for arch in $(get_archive_arches); do
     sort > $cache_dir/changes_$arch.list
 done
 
-# XXX: Keep backward compatibility
-echo_time " -> Collecting .changes files list... [merged]"
-cat $cache_dir/changes_*.list | sort > $cache_dir/changes.list
-
 echo_time "-> Done."
 
