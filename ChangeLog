@@ -1,3 +1,7 @@
+2006-02-14  Guillem Jover  <guillem@debian.org>
+
+	* archive.conf (arch_list_experimental): Remove source.
+
 2005-12-14  Guillem Jover  <guillem@debian.org>
 
 	* archive-changes-lists: Move changes.list generation code to ...
