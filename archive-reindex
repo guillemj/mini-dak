@@ -76,8 +76,8 @@ for suite in $suite_list; do
     -o APT::FTPArchive::Release::Suite="$suite" \
     -o APT::FTPArchive::Release::Architectures="$(get_suite_arches $suite)" \
     -o APT::FTPArchive::Release::Components="$(get_suite_sections $suite)" \
-    release $dists_dir/$suite \
     $release_auto \
+    release $dists_dir/$suite \
     > $dists_dir/$suite/.Release
   rm -f $dists_dir/$suite/Release
   mv -f $dists_dir/$suite/{.Release,Release}
