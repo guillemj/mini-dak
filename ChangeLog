@@ -1,3 +1,9 @@
+2006-02-15  Guillem Jover  <guillem@debian.org>
+
+	* archive.conf (archive_keyid, GNUPGHOME): New variables.
+	* archive-reindex: Make gpg use archive_reindex instead of
+	archive_maint.
+
 2006-02-14  Guillem Jover  <guillem@debian.org>
 
 	* archive-reindex: Support hardcoded NotAutomatic field in Releases
