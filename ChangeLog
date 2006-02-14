@@ -1,5 +1,9 @@
 2006-02-15  Guillem Jover  <guillem@debian.org>
 
+	* archive-obsolete: Generate an ls-lR.gz file.
+
+2006-02-15  Guillem Jover  <guillem@debian.org>
+
 	* archive.conf (archive_keyid, GNUPGHOME): New variables.
 	* archive-reindex: Make gpg use archive_reindex instead of
 	archive_maint.
