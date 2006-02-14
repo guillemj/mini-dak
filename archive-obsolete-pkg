@@ -2,7 +2,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2004, 2005 Guillem Jover <guillem@debian.org>
+# Copyright (C) 2004, 2005, 2006 Guillem Jover <guillem@debian.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,13 +27,16 @@ echo "-> Obsoleting packages:"
 
 shopt -s nullglob
 
-# pkg has the form: name[_version[_arch]]
+# the arguments have the form: arch pkgname...
+
+arch=$1
+shift
 
 for pkg do
-  echo " -> package: $pkg"
+  echo " -> package: '$pkg'"
 
-  srcdir=`poolize_package_name $pkg`
-  dstdir=$obsolete_dir/$pkg
+  srcdir=`poolize_arch_name $pkg $arch`
+  dstdir=$obsolete_dir/`date -I`/$pkg
 
   cd $srcdir || exit 1
 
@@ -49,7 +52,7 @@ for pkg do
     echo
 
     echo "  -> confirm obsolescence? [yes|no]"
-    read REPLY
+    read
 
     if [ "$REPLY" = yes ]; then
       echo "  -> proceeding ..."

@@ -1,5 +1,10 @@
 2006-02-14  Guillem Jover  <guillem@debian.org>
 
+	* archive-obsolete-pkg: Change arguments to (arch, pkgname, ...).
+	Do not specify REPLY to read.
+
+2006-02-14  Guillem Jover  <guillem@debian.org>
+
 	* TODO: Add new items.
 
 2006-02-14  Guillem Jover  <guillem@debian.org>
