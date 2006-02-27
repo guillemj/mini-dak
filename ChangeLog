@@ -1,3 +1,10 @@
+2006-02-27  Guillem Jover  <guillem@debian.org>
+
+	* archive.conf (arch_list_unstable): Remove knetbsd-i386. Add
+	kfreebsd-amd64.
+	(arch_list_unreleased): Likewise.
+	(arch_list_experimental): Likewise.
+
 2006-02-15  Guillem Jover  <guillem@debian.org>
 
 	* archive-obsolete: Generate an ls-lR.gz file.
