@@ -9,8 +9,8 @@ This is mini-dak a partial and lightweight reimplementation of dak
 dependencies, "designed" to host new Debian architectures.
 
 So the main purpose of mini-dak is to run a slave archive for new
-Debian ports, taking all sources from the master archive. Sources for
-the slave archive are supposed to be modifications and porting fixed
+Debian ports, taking all sources from the master archive. Source uploads
+to the slave archive are supposed to be modifications and porting fixes
 for the new architectures.
 
 Setup
