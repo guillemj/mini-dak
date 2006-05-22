@@ -1,3 +1,9 @@
+2006-05-22  Petr Salinger  <petr.salinger@t-systems.cz>
+
+	* archive-lib (changes_obsolete): Fix auto obsoleting by checking
+	for the distribution stack order, even if for now experimental is
+	hardcoded.
+
 2006-02-27  Guillem Jover  <guillem@debian.org>
 
 	* archive.conf (arch_list_unstable): Remove knetbsd-i386. Add

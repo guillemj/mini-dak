@@ -211,16 +211,20 @@ changes_canonic ()
 
 changes_obsolete ()
 {
-# FIXME: Should implement suite stacks for obsoleting purposes.
-#        unstable < unreleased < experimental
+  # FIXME: Should implement suite stacks for obsoleting purposes.
+  #               (unstable + unreleased) < experimental
+  #        Should remove the hardcoded experimental check.
   while read package suite arch version path; do
     if [ "$package" = "$g_package" ] &&
-       [ "$suite" = "$g_suite" ] &&
        [ "$arch" = "$g_arch" ]; then
       if dpkg --compare-versions $g_version lt $version; then
-        printf "%s %s %s %s %s\n" $g_package $g_suite $g_arch $g_version $g_path
+        if [ "$g_suite" = "experimental" -o "$suite" != "experimental" ]; then
+          printf "%s %s %s %s %s\n" $g_package $g_suite $g_arch $g_version $g_path
+        fi
       else
-        printf "%s %s %s %s %s\n" $package $suite $arch $version $path
+        if [ "$suite" = "experimental" -o "$g_suite" != "experimental" ]; then
+          printf "%s %s %s %s %s\n" $package $suite $arch $version $path
+        fi
       fi
     fi
     g_package=$package
