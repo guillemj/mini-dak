@@ -1,5 +1,9 @@
 2006-05-22  Guillem Jover  <guillem@debian.org>
 
+	* archive.conf: Reorder. Add few comments explaining variables.
+
+2006-05-22  Guillem Jover  <guillem@debian.org>
+
 	* README: New file.
 
 2006-05-22  Petr Salinger  <petr.salinger@t-systems.cz>
