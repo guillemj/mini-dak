@@ -1,3 +1,10 @@
+2006-08-01  Guillem Jover  <guillem@debian.org>
+
+	* archive-lib (fetch_source_name): New function.
+	(changes_canonic): Use the new function fetch_source_name with
+	the new .changes Source field format for binNMUs.
+	* archive-install (pool_install): Likewise.
+
 2006-05-22  Guillem Jover  <guillem@debian.org>
 
 	* archive.conf: Reorder. Add few comments explaining variables.

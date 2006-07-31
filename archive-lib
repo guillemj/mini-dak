@@ -45,6 +45,11 @@ fetch_field ()
   formail -z -x$field:
 }
 
+fetch_source_name ()
+{
+  fetch_field Source | cut -d' ' -f1
+}
+
 fetch_files ()
 {
   formail -xFiles: | cut -d' ' -f6
@@ -198,7 +203,7 @@ changes_canonic ()
 {
   while read f_changes; do
     archive=`changes_strip < $f_changes`
-    package=`echo "$archive" | fetch_field "Source"`
+    package=`echo "$archive" | fetch_source_name`
     version=`echo "$archive" | fetch_field "Version"`
     suite=`echo "$archive" | fetch_field "Distribution"`
     arches=`echo "$archive" | fetch_field "Architecture"`
