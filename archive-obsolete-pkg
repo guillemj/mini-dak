@@ -32,8 +32,10 @@ shopt -s nullglob
 arch=$1
 shift
 
-for pkg do
-  echo " -> package: '$pkg'"
+obsolete_pkg_arch ()
+{
+  arch=$1
+  pkg=$2
 
   srcdir=`poolize_arch_name $pkg $arch`
   dstdir=$obsolete_dir/`date -I`/$pkg
@@ -42,7 +44,7 @@ for pkg do
     cd $srcdir
   else
     echo " -> warning: package '$pkg' does not exist"
-    continue
+    return
   fi
 
   changes=`ls $pkg*.changes | sort -n`
@@ -65,6 +67,18 @@ for pkg do
       mv $changes_file $srcfiles $dstdir
     fi
   done
+}
+
+for pkg do
+  echo " -> package: '$pkg'"
+
+  if [ "$arch" = any ]; then
+    for a in $(get_archive_arches); do
+      obsolete_pkg_arch $a $pkg
+    done
+  else
+    obsolete_pkg_arch $arch $pkg
+  fi
 done
 
 echo " -> Done."
