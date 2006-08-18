@@ -81,5 +81,6 @@ if [ "$INSTALLED" = "yes" ]; then
   ./archive-obsolete
   ./archive-reindex
   ./archive-quinn
+  ./archive-stats
 fi
 
