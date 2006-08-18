@@ -36,7 +36,7 @@ for c in main main.src main.debian-installer extra.main; do
   wget -q -N $debian_archive/indices/override.$d.$c.gz -O $indices_dir/override.$a.$c.gz
   gunzip -f $indices_dir/override.$a.$c.gz
   ln -f -s $indices_dir/override.$a.$c $indices_dir/override.unreleased.$c
-  # FIXME: katie hardcodes this ...
+  # FIXME: DAK hardcodes this ...
   ln -f -s $indices_dir/override.$a.$c $indices_dir/override.experimental.$c
 done
 

@@ -5,7 +5,7 @@ Introduction
 ============
 
 This is mini-dak a partial and lightweight reimplementation of dak
-(Debian Archive Kit/Katie) in shell script and with no database
+(Debian Archive Kit) in shell script and with no database
 dependencies, "designed" to host new Debian architectures.
 
 So the main purpose of mini-dak is to run a slave archive for new
