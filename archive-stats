@@ -2,7 +2,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2004 Guillem Jover <guillem@debian.org>
+# Copyright (C) 2004, 2006 Guillem Jover <guillem@debian.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,5 +25,8 @@
 
 echo "-> Doing archive statistics"
 
-#cat $cache_dir/changes.list | changes_newest > $cache_dir/stats.list
+for arch in $(get_archive_arches); do
+  echo " -> Source packages in: $arch"
+  cut -f2 -d\  $cache_dir/cache/changes_$arch.list | sort | uniq -c
+done
 

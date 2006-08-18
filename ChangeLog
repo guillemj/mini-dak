@@ -1,5 +1,9 @@
 2006-08-18  Guillem Jover  <guillem@debian.org>
 
+	* archive-stats: Print number of source package per arch.
+
+2006-08-18  Guillem Jover  <guillem@debian.org>
+
 	* archive-obsolete-pkg: Do not bail out if a packages cannot be found
 	in the pool.
 
