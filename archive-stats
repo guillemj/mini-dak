@@ -23,10 +23,10 @@
 
 # Main
 
-echo "-> Doing archive statistics"
+log stats "-> Doing archive statistics"
 
 for arch in $(get_archive_arches); do
-  echo " -> Source packages in: $arch"
-  cut -f2 -d\  $cache_dir/changes_$arch.list | sort | uniq -c
+  log stats " -> Source packages in: $arch"
+  cut -f2 -d\  $cache_dir/changes_$arch.list | sort | uniq -c | logpipe stats
 done
 

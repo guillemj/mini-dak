@@ -1,5 +1,9 @@
 2006-08-18  Guillem Jover  <guillem@debian.org>
 
+	* archive-stats: Output the statistics to a new stats log file.
+
+2006-08-18  Guillem Jover  <guillem@debian.org>
+
 	* archive-stats: Print number of source package per arch.
 
 2006-08-18  Guillem Jover  <guillem@debian.org>
