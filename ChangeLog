@@ -1,5 +1,9 @@
 2006-08-18  Guillem Jover  <guillem@debian.org>
 
+	* archive-stats: Merge hack type stats into the pkg number stats loop.
+
+2006-08-18  Guillem Jover  <guillem@debian.org>
+
 	* archive-stats: Filter real arches from unreleased.
 
 2006-08-18  Guillem Jover  <guillem@debian.org>
