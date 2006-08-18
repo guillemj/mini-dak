@@ -35,7 +35,7 @@ for arch in $(filter_real_arches $(get_suite_arches unreleased)); do
   log stats " -> Type of specific hacks in: $arch"
   grep '[^ ]\+ unreleased' $cache_dir/changes_$arch.list | cut -f4 -d\  \
     | sed -re 's/\+b[0-9]+//;s/\.[0-9]+$//;s/.*\+([a-z]*)$/\1/' \
-    | sort | uniq -c
+    | sort | uniq -c | logpipe stats
 done
 
 log stats "-> Done."
