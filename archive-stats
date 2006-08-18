@@ -30,3 +30,13 @@ for arch in $(get_archive_arches); do
   cut -f2 -d\  $cache_dir/changes_$arch.list | sort | uniq -c | logpipe stats
 done
 
+# Special case unreleased as it is the place holder for arch specific hacks
+for arch in $(get_suite_arches unreleased); do
+  log stats " -> Type of specific hacks in: $arch"
+  grep '[^ ]\+ unreleased' $cache_dir/changes_$arch.list | cut -f4 -d\  \
+    | sed -re 's/\+b[0-9]+//;s/\.[0-9]+$//;s/.*\+([a-z]*)$/\1/' \
+    | sort | uniq -c
+done
+
+log stats "-> Done."
+

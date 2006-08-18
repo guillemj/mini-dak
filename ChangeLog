@@ -1,5 +1,10 @@
 2006-08-18  Guillem Jover  <guillem@debian.org>
 
+	* archive-stats: Add stats for hack type, based on the version
+	suffixes.
+
+2006-08-18  Guillem Jover  <guillem@debian.org>
+
 	* archive-obsolete-pkg: Support obsoleting a package in all arches in
 	the archive by specifying arch any.
 	(obsolete_pkg_arch): New function.
