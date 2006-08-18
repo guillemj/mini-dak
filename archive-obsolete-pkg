@@ -38,7 +38,12 @@ for pkg do
   srcdir=`poolize_arch_name $pkg $arch`
   dstdir=$obsolete_dir/`date -I`/$pkg
 
-  cd $srcdir || exit 1
+  if [ -d $srcdir ]; then
+    cd $srcdir
+  else
+    echo " -> warning: package '$pkg' does not exist"
+    continue
+  fi
 
   changes=`ls $pkg*.changes | sort -n`
   echo " -> full list:"
