@@ -34,6 +34,10 @@ for arch in $(get_archive_arches); do
   grep '[^ ]\+ unreleased' $cache_dir/changes_$arch.list | cut -f4 -d\  \
     | sed -re 's/\+b[0-9]+//;s/\.[0-9]+$//;s/.*\+([a-z]*)$/\1/' \
     | sort | uniq -c | logpipe stats
+
+  # Print the .changes files for the unreleased suite
+  grep '[^ ]\+ unreleased' $cache_dir/changes_$arch.list | cut -f5 -d\  \
+    | xargs cat | logpipe changes-$arch
 done
 
 log stats "-> Done."
