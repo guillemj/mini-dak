@@ -1,3 +1,8 @@
+2006-11-12  Guillem Jover  <guillem@debian.org>
+
+	* archive-stats: Silent the .changes output, so that the cron does
+	not send massive mails.
+
 2006-10-18  Guillem Jover  <guillem@debian.org>
 
 	* archive-stats: Print the .changes files for the unreleased suite

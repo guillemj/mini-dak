@@ -37,7 +37,7 @@ for arch in $(get_archive_arches); do
 
   # Print the .changes files for the unreleased suite
   grep '[^ ]\+ unreleased' $cache_dir/changes_$arch.list | cut -f5 -d\  \
-    | xargs cat | logpipe changes-$arch
+    | xargs cat | logpipe changes-$arch >/dev/null
 done
 
 log stats "-> Done."
