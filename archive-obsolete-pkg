@@ -58,10 +58,10 @@ obsolete_pkg_arch ()
     echo "$srcfiles"
     echo
 
-    echo "  -> confirm obsolescence? [yes|no]"
+    echo "  -> confirm obsolescence? [y|n]"
     read
 
-    if [ "$REPLY" = yes ]; then
+    if [ "$REPLY" = y ]; then
       echo "  -> proceeding ..."
       mkdir -p $dstdir
       mv $changes_file $srcfiles $dstdir

@@ -1,3 +1,9 @@
+2007-01-09  Guillem Jover  <guillem@debian.org>
+
+	* archive-obsolete-pkg (obslete_pkg_arch): Change confirmation reply
+	from 'yes' to 'y', to ease maintenance work and enable to use the yes
+	command.
+
 2006-11-12  Guillem Jover  <guillem@debian.org>
 
 	* archive-stats: Silent the .changes output, so that the cron does
