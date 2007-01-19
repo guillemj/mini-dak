@@ -1,3 +1,9 @@
+2007-01-19  Guillem Jover  <guillem@debian.org>
+
+	* archive-mirrors-push: New file.
+	* archive-install: Call archive-mirrors-push.
+	* archive.conf (archive_push_mirrors): New variable.
+
 2007-01-09  Guillem Jover  <guillem@debian.org>
 
 	* archive-obsolete-pkg (obslete_pkg_arch): Change confirmation reply
