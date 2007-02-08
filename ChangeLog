@@ -1,5 +1,9 @@
 2007-02-08  Guillem Jover  <guillem@debian.org>
 
+	* archive.conf (archive_keyid): Update to 2007 signing key.
+
+2007-02-08  Guillem Jover  <guillem@debian.org>
+
 	* archive-snapshot: New file.
 	* crontab: Add an entry for archive-snapshot.
 
