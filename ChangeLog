@@ -1,5 +1,11 @@
 2007-04-28  Guillem Jover  <guillem@debian.org>
 
+	* archive.conf (arch_list_unstable): Add armel.
+	(arch_list_unreleased): Likewise.
+	(arch_list_experimenta): Likewise.
+
+2007-04-28  Guillem Jover  <guillem@debian.org>
+
 	* archive.conf (suite_alias): Updated the aliases to reflect the
 	release of etch, now lenny is testing.
 
