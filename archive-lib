@@ -162,7 +162,7 @@ get_suite_codename()
     fi
   done
 
-  return 1
+  echo $suite
 }
 
 canonic_suite()

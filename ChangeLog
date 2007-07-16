@@ -1,5 +1,10 @@
 2007-07-17  Guillem Jover  <guillem@debian.org>
 
+	* archive-lib (get_suite_codename): Do not fail if codename not found,
+	just return the suite.
+
+2007-07-17  Guillem Jover  <guillem@debian.org>
+
 	* archive-lib (get_suite_codename): New function.
 	* archive-reindex: Set APT::FTPArchive::Release::Codename with
 	get_suite_codename.
