@@ -1,3 +1,9 @@
+2007-07-17  Guillem Jover  <guillem@debian.org>
+
+	* archive-lib (get_suite_codename): New function.
+	* archive-reindex: Set APT::FTPArchive::Release::Codename with
+	get_suite_codename.
+
 2007-04-28  Guillem Jover  <guillem@debian.org>
 
 	* archive.conf (arch_list_unstable): Add armel.

@@ -148,6 +148,23 @@ valid_arch ()
   return 1
 }
 
+get_suite_codename()
+{
+  local suite=$1
+
+  for s_alias in $suite_alias; do
+    s_codename=${s_alias%%:*}
+    s_suite=${s_alias##*:}
+
+    if [ "$suite" = $s_suite ]; then
+      echo $s_codename
+      return 0
+    fi
+  done
+
+  return 1
+}
+
 canonic_suite()
 {
   local code_name=$1
