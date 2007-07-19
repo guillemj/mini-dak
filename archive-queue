@@ -3,7 +3,7 @@
 # $Id$
 #
 # Copyright (C) 2003 Robert Millan <rmh@debian.org>
-# Copyright (C) 2003, 2004, 2005 Guillem Jover <guillem@debian.org>
+# Copyright (C) 2003-2005, 2007 Guillem Jover <guillem@debian.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -143,6 +143,11 @@ verify_multiarch_changes ()
   local multiarch=`filter_real_arches $target_arches | wc -w`
 
   if [ $multiarch -gt 1 ]; then
+    return 1
+  elif [ "$multipool" = "yes" ] && [ $multiarch -eq 0 ]; then
+    # This will happen when a pure arch:all .changes has been uploaded,
+    # but because it lacks a normal arch we don't know in which pool to
+    # put the arch:all packages.
     return 1
   else
     return 0
