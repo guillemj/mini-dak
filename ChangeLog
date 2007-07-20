@@ -1,5 +1,9 @@
 2007-07-20  Guillem Jover  <guillem@debian.org>
 
+	* archive-mirror-arch-all: Add a mass removal protector.
+
+2007-07-20  Guillem Jover  <guillem@debian.org>
+
 	* archive-mirror-arch-all: Remove '--progress' from rsync commands.
 
 2007-07-20  Guillem Jover  <guillem@debian.org>
