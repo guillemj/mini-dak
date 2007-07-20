@@ -46,7 +46,7 @@ rsync -v --progress \
   rsync://$mirror/debian/$idx_dir/$idx_file.gz ./
 
 echo_time " -> Filtering arch:all packages ..."
-zcat $idx_file.gz | grep '\./pool/main/.*/.*_all.u*deb' \
+zcat $idx_file.gz | sed 's,^\./,,' | grep '^pool/main/.*/.*_all.u*deb' \
   | sort >$idx_filtered_file
 
 cd $archive_dir
