@@ -58,12 +58,12 @@ done
 echo_time "-> Moving new file lists into place..."
 for suite in $suite_list; do
   for arch in $(get_suite_arches $suite); do
-      touch $cache_dir/files_${suite}_$arch.list.new
-      mv -f $cache_dir/files_${suite}_$arch.list.new \
-            $cache_dir/files_${suite}_$arch.list
-      touch $cache_dir/files_${suite}_$arch.di.list.new
-      mv -f $cache_dir/files_${suite}_$arch.di.list.new \
-            $cache_dir/files_${suite}_$arch.di.list
+    touch $cache_dir/files_${suite}_$arch.list.new
+    mv -f $cache_dir/files_${suite}_$arch.list.new \
+          $cache_dir/files_${suite}_$arch.list
+    touch $cache_dir/files_${suite}_$arch.di.list.new
+    mv -f $cache_dir/files_${suite}_$arch.di.list.new \
+          $cache_dir/files_${suite}_$arch.di.list
   done
 done
 

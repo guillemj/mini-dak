@@ -1,5 +1,9 @@
 2007-07-20  Guillem Jover  <guillem@debian.org>
 
+	* archive-reindex-files: Fix indentation.
+
+2007-07-20  Guillem Jover  <guillem@debian.org>
+
 	* archive-mirror-arch-all (idx_filtered_file): Change file name.
 	Add more options to rsync. Add '-f' to rm, to handle the empty
 	list case. Move file list merging to ...
