@@ -33,7 +33,7 @@ echo_time " -> Collecting override files"
 d=sid
 a=unstable
 for c in main main.src main.debian-installer extra.main; do
-  wget -q -N $debian_archive/indices/override.$d.$c.gz -O $indices_dir/override.$a.$c.gz
+  wget -q -N http://$debian_archive/indices/override.$d.$c.gz -O $indices_dir/override.$a.$c.gz
   gunzip -f $indices_dir/override.$a.$c.gz
   ln -f -s $indices_dir/override.$a.$c $indices_dir/override.unreleased.$c
   # FIXME: DAK hardcodes this ...
@@ -43,10 +43,10 @@ done
 cd $cache_dir
 
 echo_time " -> Collecting Sources files"
-wget -q -N $debian_archive/dists/unstable/main/source/Sources.bz2
+wget -q -N http://$debian_archive/dists/unstable/main/source/Sources.bz2
 bunzip2 -c Sources.bz2 > Sources
 echo_time " -> Collecting hurd-i386 binary files"
-wget -q -N $debian_archive/dists/unstable/main/binary-hurd-i386/Packages.bz2 -O Packages-unstable.hurd-i386.bz2
+wget -q -N http://$debian_archive/dists/unstable/main/binary-hurd-i386/Packages.bz2 -O Packages-unstable.hurd-i386.bz2
 bunzip2 -c Packages-unstable.hurd-i386.bz2 > Packages-unstable.hurd-i386
 
 echo_time " -> Collecting Packages files"

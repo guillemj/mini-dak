@@ -29,8 +29,6 @@
 
 set -e
 
-# FIXME: Our current master mirror does not support rsync
-mirror=ftp.es.debian.org
 idx_dir=indices/files/components
 # FIXME: Hardcoded stuff
 idx_suite=unstable
@@ -43,7 +41,7 @@ echo_time '-> Mirroring from master server ...'
 
 echo_time ' -> Syncing arch:all packages list ...'
 rsync -v \
-  rsync://$mirror/debian/$idx_dir/$idx_file.gz ./
+  rsync://$debian_archive/$idx_dir/$idx_file.gz ./
 
 echo_time " -> Filtering arch:all packages ..."
 zcat $idx_file.gz | sed 's,^\./,,' | grep '^pool/main/.*/.*_all.u*deb' \
@@ -55,7 +53,7 @@ echo_time ' -> Syncing arch:all packages ...'
 rsync -vm --times --links --hard-links \
   --files-from $cache_dir/$idx_filtered_file \
   --max-delete=0 \
-  rsync://$mirror/debian/ ./
+  rsync://$debian_archive/ ./
 
 echo_time ' -> Removing obsolete arch:all packages ...'
 # FIXME: Hardcoded pool_dir

@@ -1,5 +1,13 @@
 2007-07-20  Guillem Jover  <guillem@debian.org>
 
+	* archive.conf (debian_archive): Switch from jane.uab.es to
+	ftp.es.debian.org, as the latter supports rsync.
+	* archive-mirror-arch-all (mirror): Remove variable. Make rsync use
+	debian_archive instead, adapting the URL to remove 'debian/'.
+	* archive-lists: Prefix debian_archive with the protocol.
+
+2007-07-20  Guillem Jover  <guillem@debian.org>
+
 	* archive-mirror-arch-all: Add a mass removal protector.
 
 2007-07-20  Guillem Jover  <guillem@debian.org>
