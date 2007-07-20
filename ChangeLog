@@ -1,5 +1,11 @@
 2007-07-20  Guillem Jover  <guillem@debian.org>
 
+	* archive-install: Move archive-mirror-arch-all call before
+	archive-reindex-files, as the latter requires the generated mirror
+	files.
+
+2007-07-20  Guillem Jover  <guillem@debian.org>
+
 	* archive.conf (debian_archive): Switch from jane.uab.es to
 	ftp.es.debian.org, as the latter supports rsync.
 	* archive-mirror-arch-all (mirror): Remove variable. Make rsync use
