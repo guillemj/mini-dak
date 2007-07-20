@@ -49,9 +49,9 @@ echo_time '-> Merging mirrored arch:all files into suite file lists ...'
 for suite in unstable; do
   for arch in $(get_suite_arches $suite); do
     grep '_all\.deb$' $cache_dir/mirror_${suite}_all.list \
-      >> $cache_dir/files_${suite}_$arch.list
+      >> $cache_dir/files_${suite}_$arch.list.new
     grep '_all\.udeb$' $cache_dir/mirror_${suite}_all.list \
-      >> $cache_dir/files_${suite}_$arch.di.list
+      >> $cache_dir/files_${suite}_$arch.di.list.new
   done
 done
 

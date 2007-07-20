@@ -1,5 +1,10 @@
 2007-07-20  Guillem Jover  <guillem@debian.org>
 
+	* archive-reindex-files: Append the mirror contents into the
+	.lists.new files.
+
+2007-07-20  Guillem Jover  <guillem@debian.org>
+
 	* archive-install: Move archive-mirror-arch-all call before
 	archive-reindex-files, as the latter requires the generated mirror
 	files.
