@@ -1,5 +1,10 @@
 2007-07-20  Guillem Jover  <guillem@debian.org>
 
+	* archive-mirrors-push: Rename to ...
+	* archive-mirror-push: ... this. Fix all callers.
+
+2007-07-20  Guillem Jover  <guillem@debian.org>
+
 	* archive-queue (verify_multiarch_changes): Reject .changes files
 	with only arch:all packages when using the multipool option.
 

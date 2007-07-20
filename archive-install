@@ -80,7 +80,7 @@ if [ "$INSTALLED" = "yes" ]; then
   ./archive-changes-lists
   ./archive-obsolete
   ./archive-reindex
-  ./archive-mirrors-push
+  ./archive-mirror-push
   ./archive-quinn
   ./archive-stats
 fi
