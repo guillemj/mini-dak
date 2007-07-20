@@ -44,6 +44,17 @@ for arch in $(get_archive_arches); do
   done
 done
 
+echo_time '-> Merging mirrored arch:all files into suite file lists ...'
+# FIXME: Hardcoded suite
+for suite in unstable; do
+  for arch in $(get_suite_arches $suite); do
+    grep '_all\.deb$' $cache_dir/mirror_${suite}_all.list \
+      >> $cache_dir/files_${suite}_$arch.list
+    grep '_all\.udeb$' $cache_dir/mirror_${suite}_all.list \
+      >> $cache_dir/files_${suite}_$arch.di.list
+  done
+done
+
 echo_time "-> Moving new file lists into place..."
 for suite in $suite_list; do
   for arch in $(get_suite_arches $suite); do

@@ -35,7 +35,7 @@ idx_dir=indices/files/components
 # FIXME: Hardcoded stuff
 idx_suite=unstable
 idx_file=suite-$idx_suite.list
-idx_filtered_file=suite-$idx_suite-arch-all.list
+idx_filtered_file=mirror_${idx_suite}_all.list
 
 cd $cache_dir
 
@@ -52,7 +52,7 @@ zcat $idx_file.gz | grep '\./pool/main/.*/.*_all.u*deb' \
 cd $archive_dir
 
 echo_time ' -> Syncing arch:all packages ...'
-rsync -vm --progress  \
+rsync -vm --progress --times --links --hard-links \
   --files-from $cache_dir/$idx_filtered_file \
   --max-delete=0 \
   rsync://$mirror/debian/ ./
@@ -62,18 +62,7 @@ echo_time ' -> Removing obsolete arch:all packages ...'
 find ./pool -type f | sort >$cache_dir/pool.list
 diff -u $cache_dir/pool.list $cache_dir/$idx_filtered_file \
   | tail -n +2 | grep '^-' | cut -c2- | tee $cache_dir/pool.removals \
-  | xargs rm
-
-echo_time ' -> Merging new files into suite arch:all file lists ...'
-# FIXME: Hardcoded suite
-for suite in $idx_suite; do
-  for arch in $(get_suite_arches $suite); do
-    grep '_all\.deb$' $cache_dir/$idx_filtered_file \
-      >> $cache_dir/files_${suite}_$arch.list
-    grep '_all\.udeb$' $cache_dir/$idx_filtered_file \
-      >> $cache_dir/files_${suite}_$arch.di.list
-  done
-done
+  | xargs rm -f
 
 echo_time '-> Done.'
 
