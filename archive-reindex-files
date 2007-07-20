@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+# $Id$
+#
+# Copyright (C) 2003-2007 Guillem Jover <guillem@debian.org>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software Foundation,
+# Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+#
+
+# Import library
+
+. archive-lib
+
+#
+# Main
+#
+
+echo_time "-> Regenerating file lists..."
+for arch in $(get_archive_arches); do
+  echo_time " -> Regenerating file list.. [$arch]"
+  cat $cache_dir/changes_$arch.list | while read package suite arch version path; do
+    archive_file=`changes_strip < $path`
+    basepath=`dirname $path`
+    basedir=${basepath#$archive_dir/}
+    files=`echo "$archive_file" | fetch_files`
+    filepaths=`echo "$files" | sed -e "s:^ *:$basedir/:"`
+
+    echo "$filepaths" | grep "_\($arch\|all\)\.deb" \
+      >> $cache_dir/files_${suite}_$arch.list.new
+    echo "$filepaths" | grep "_\($arch\|all\)\.udeb" \
+      >> $cache_dir/files_${suite}_$arch.di.list.new
+  done
+done
+
+echo_time "-> Moving new file lists into place..."
+for suite in $suite_list; do
+  for arch in $(get_suite_arches $suite); do
+      touch $cache_dir/files_${suite}_$arch.list.new
+      mv -f $cache_dir/files_${suite}_$arch.list.new \
+            $cache_dir/files_${suite}_$arch.list
+      touch $cache_dir/files_${suite}_$arch.di.list.new
+      mv -f $cache_dir/files_${suite}_$arch.di.list.new \
+            $cache_dir/files_${suite}_$arch.di.list
+  done
+done
+
+echo_time "-> Done."
+

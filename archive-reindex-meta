@@ -31,35 +31,6 @@
 # Main
 #
 
-echo_time "-> Regenerating file lists..."
-for arch in $(get_archive_arches); do
-  echo_time " -> Regenerating file list.. [$arch]"
-  cat $cache_dir/changes_$arch.list | while read package suite arch version path; do
-    archive_file=`changes_strip < $path`
-    basepath=`dirname $path`
-    basedir=${basepath#$archive_dir/}
-    files=`echo "$archive_file" | fetch_files`
-    filepaths=`echo "$files" | sed -e "s:^ *:$basedir/:"`
-
-    echo "$filepaths" | grep "_\($arch\|all\)\.deb" \
-      >> $cache_dir/files_${suite}_$arch.list.new
-    echo "$filepaths" | grep "_\($arch\|all\)\.udeb" \
-      >> $cache_dir/files_${suite}_$arch.di.list.new
-  done
-done
-
-echo_time "-> Moving new file lists into place..."
-for suite in $suite_list; do
-  for arch in $(get_suite_arches $suite); do
-      touch $cache_dir/files_${suite}_$arch.list.new
-      mv -f $cache_dir/files_${suite}_$arch.list.new \
-            $cache_dir/files_${suite}_$arch.list
-      touch $cache_dir/files_${suite}_$arch.di.list.new
-      mv -f $cache_dir/files_${suite}_$arch.di.list.new \
-            $cache_dir/files_${suite}_$arch.di.list
-  done
-done
-
 echo_time "-> Regenerating Packages and Sources files..."
 apt-ftparchive generate $apt_config
 
