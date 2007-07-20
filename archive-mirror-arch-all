@@ -42,7 +42,7 @@ cd $cache_dir
 echo_time '-> Mirroring from master server ...'
 
 echo_time ' -> Syncing arch:all packages list ...'
-rsync -v --progress \
+rsync -v \
   rsync://$mirror/debian/$idx_dir/$idx_file.gz ./
 
 echo_time " -> Filtering arch:all packages ..."
@@ -52,7 +52,7 @@ zcat $idx_file.gz | sed 's,^\./,,' | grep '^pool/main/.*/.*_all.u*deb' \
 cd $archive_dir
 
 echo_time ' -> Syncing arch:all packages ...'
-rsync -vm --progress --times --links --hard-links \
+rsync -vm --times --links --hard-links \
   --files-from $cache_dir/$idx_filtered_file \
   --max-delete=0 \
   rsync://$mirror/debian/ ./
