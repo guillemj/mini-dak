@@ -1,5 +1,9 @@
 2007-07-20  Guillem Jover  <guillem@debian.org>
 
+	* archive-mirror-arch-all: Remove trailing './' from pool.list.
+
+2007-07-20  Guillem Jover  <guillem@debian.org>
+
 	* archive-mirror-arch-all: Remove trailing './' from file paths.
 
 2007-07-20  Guillem Jover  <guillem@debian.org>

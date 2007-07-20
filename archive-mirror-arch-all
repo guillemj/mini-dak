@@ -59,7 +59,7 @@ rsync -vm --progress --times --links --hard-links \
 
 echo_time ' -> Removing obsolete arch:all packages ...'
 # FIXME: Hardcoded pool_dir
-find ./pool -type f | sort >$cache_dir/pool.list
+find pool -type f | sort >$cache_dir/pool.list
 diff -u $cache_dir/pool.list $cache_dir/$idx_filtered_file \
   | tail -n +2 | grep '^-' | cut -c2- | tee $cache_dir/pool.removals \
   | xargs rm -f
