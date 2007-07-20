@@ -1,5 +1,12 @@
 2007-07-20  Guillem Jover  <guillem@debian.org>
 
+	* archive-mirror-arch-all: Support mirroring arch:all packages from
+	the master archive.
+	* archive-install: Call archive-mirror-arch-all after
+	archive-reindex-files.
+
+2007-07-20  Guillem Jover  <guillem@debian.org>
+
 	* archive-reindex: Split into ...
 	* archive-reindex-files: ... this and ...
 	* archive-reindex-meta: ... this. Fix all callers.

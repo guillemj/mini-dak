@@ -1,0 +1,79 @@
+#!/bin/bash
+#
+# $Id$
+#
+# Copyright (C) 2007 Guillem Jover <guillem@debian.org>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software Foundation,
+# Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+#
+
+# Import library
+
+. archive-lib
+
+#
+# Main
+#
+
+set -e
+
+# FIXME: Our current master mirror does not support rsync
+mirror=ftp.es.debian.org
+idx_dir=indices/files/components
+# FIXME: Hardcoded stuff
+idx_suite=unstable
+idx_file=suite-$idx_suite.list
+idx_filtered_file=suite-$idx_suite-arch-all.list
+
+cd $cache_dir
+
+echo_time '-> Mirroring from master server ...'
+
+echo_time ' -> Syncing arch:all packages list ...'
+rsync -v --progress \
+  rsync://$mirror/debian/$idx_dir/$idx_file.gz ./
+
+echo_time " -> Filtering arch:all packages ..."
+zcat $idx_file.gz | grep '\./pool/main/.*/.*_all.u*deb' \
+  | sort >$idx_filtered_file
+
+cd $archive_dir
+
+echo_time ' -> Syncing arch:all packages ...'
+rsync -vm --progress  \
+  --files-from $cache_dir/$idx_filtered_file \
+  --max-delete=0 \
+  rsync://$mirror/debian/ ./
+
+echo_time ' -> Removing obsolete arch:all packages ...'
+# FIXME: Hardcoded pool_dir
+find ./pool -type f | sort >$cache_dir/pool.list
+diff -u $cache_dir/pool.list $cache_dir/$idx_filtered_file \
+  | tail -n +2 | grep '^-' | cut -c2- | tee $cache_dir/pool.removals \
+  | xargs rm
+
+echo_time ' -> Merging new files into suite arch:all file lists ...'
+# FIXME: Hardcoded suite
+for suite in $idx_suite; do
+  for arch in $(get_suite_arches $suite); do
+    grep '_all\.deb$' $cache_dir/$idx_filtered_file \
+      >> $cache_dir/files_${suite}_$arch.list
+    grep '_all\.udeb$' $cache_dir/$idx_filtered_file \
+      >> $cache_dir/files_${suite}_$arch.di.list
+  done
+done
+
+echo_time '-> Done.'
+
