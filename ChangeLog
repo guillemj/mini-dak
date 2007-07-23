@@ -1,3 +1,8 @@
+2007-07-22  Guillem Jover  <guillem@debian.org>
+
+	* archive-setup (create_apt_config): Limit Contents file generation
+	to 25000 KiB per day.
+
 2007-07-20  Guillem Jover  <guillem@debian.org>
 
 	* archive-reindex-files: Append the mirror contents into the

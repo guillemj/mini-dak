@@ -30,6 +30,7 @@ create_apt_config ()
 	  Packages::Extensions	".deb";
 	  Packages::Compress	". gzip bzip2";
 	  Sources::Compress	". gzip bzip2";
+	  MaxContentsChange	25000;
 	};
 
 	APT::FTPArchive::Release {
