@@ -1,3 +1,7 @@
+2007-08-03  Guillem Jover  <guillem@debian.org>
+
+	* archive.conf (archive_push_mirrors): Add 'mirror@farad.aurel32.net'.
+
 2007-07-22  Guillem Jover  <guillem@debian.org>
 
 	* archive-setup (create_apt_config): Limit Contents file generation
