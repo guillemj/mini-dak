@@ -2,7 +2,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2004, 2006 Guillem Jover <guillem@debian.org>
+# Copyright (C) 2004, 2006, 2007 Guillem Jover <guillem@debian.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ for arch in $(get_archive_arches); do
   # Special case unreleased as it is the place holder for arch specific hacks
   log stats " -> Type of specific hacks (unreleased) in: $arch"
   grep '[^ ]\+ unreleased' $cache_dir/changes_$arch.list | cut -f4 -d\  \
-    | sed -re 's/\+b[0-9]+//;s/\.[0-9]+$//;s/.*\+([a-z]*)$/\1/' \
+    | sed -re 's/\+b[0-9]+//;s/\.[0-9]+$//;s/.*\+([a-z]*)$/\1/;s/^[0-9].*/<version>/' \
     | sort | uniq -c | logpipe stats
 
   # Print the .changes files for the unreleased suite

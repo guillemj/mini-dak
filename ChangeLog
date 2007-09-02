@@ -1,5 +1,10 @@
 2007-08-17  Guillem Jover  <guillem@debian.org>
 
+	* archive-stats: Coalesce all remaining versions from unreleased into
+	a magic '<version>' string.
+
+2007-08-17  Guillem Jover  <guillem@debian.org>
+
 	* archive.conf (archive_push_mirrors): Add 'mirror@debian.ethz.ch'.
 
 2007-08-03  Guillem Jover  <guillem@debian.org>
