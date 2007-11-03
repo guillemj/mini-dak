@@ -35,6 +35,7 @@ mkdir -p $snapshot_dir
 
 # FIXME: maybe make the arches/suites to snapshot configurable?
 
+cp -al pool $snapshot_dir
 cp -al pool-* $snapshot_dir
 cp -a dists $snapshot_dir
 
