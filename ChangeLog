@@ -1,3 +1,8 @@
+2007-11-15  Guillem Jover  <guillem@debian.org>
+
+	* archive.conf (archive_push_mirrors): Change
+	'mirror@farad.aurel32.net' to 'gnuab@hall.aurel32.net'.
+
 2007-11-03  Guillem Jover  <guillem@debian.org>
 
 	* archive-snapshot: Snapshot arch:all packages which are on pool/.
