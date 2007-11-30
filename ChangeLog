@@ -1,3 +1,8 @@
+2007-11-30  Guillem Jover  <guillem@debian.org>
+
+	* archive-reindex-meta: Fix typo 'archive_keyring' ->
+	'archive_keyrings'.
+
 2007-11-15  Guillem Jover  <guillem@debian.org>
 
 	* archive.conf (archive_push_mirrors): Change

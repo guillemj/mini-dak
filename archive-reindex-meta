@@ -53,7 +53,7 @@ for suite in $suite_list; do
     > $dists_dir/$suite/.Release
   rm -f $dists_dir/$suite/Release
   mv -f $dists_dir/$suite/{.Release,Release}
-  gpg -a --yes -u $archive_keyid $archive_keyring -b \
+  gpg -a --yes -u $archive_keyid $archive_keyrings -b \
     -o $dists_dir/$suite/Release.gpg $dists_dir/$suite/Release
 done
 
