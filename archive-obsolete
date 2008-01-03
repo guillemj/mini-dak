@@ -23,8 +23,6 @@
 
 . archive-lib
 
-LANG=C
-
 cd $cache_dir
 
 log obsolete "-> Generating obsolete packages lists ..."

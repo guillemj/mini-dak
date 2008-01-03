@@ -23,6 +23,11 @@
 # Requires: procmail (formail)
 #
 
+# Sanitize environment
+
+unset LANG
+unset LC_ALL
+
 # Import configuration
 
 . archive.conf

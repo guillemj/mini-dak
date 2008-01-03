@@ -1,3 +1,9 @@
+2008-01-03  Aurelien Jarno <aurel32@debian.org>,
+            Guillem Jover  <guillem@debian.org>
+
+	* archive-lib (LANG, LC_ALL): Unset environment variables.
+	* archive-obsolete (LANG): Do not set environment variable.
+
 2007-11-30  Guillem Jover  <guillem@debian.org>
 
 	* archive-reindex-meta: Fix typo 'archive_keyring' ->
