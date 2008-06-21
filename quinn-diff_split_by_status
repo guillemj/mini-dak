@@ -2,7 +2,7 @@
 
 # Script to sort quinn diff output by riority, split into sections of
 #                                          uncompiled and out of date.
-# Copyright (C) 1997, 1998 James Troup <james@nocrew.org>
+# Copyright © 1997, 1998 James Troup <james@nocrew.org>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
