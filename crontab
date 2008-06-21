@@ -1,7 +1,5 @@
 # /etc/cron.d/mini-dak: crontab fragment for mini-dak
 #
-# $Id$
-#
 
 BIN=/srv/ftp.gnuab.org/bin
 MAILTO=ftpmaster
