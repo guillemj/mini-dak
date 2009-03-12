@@ -1,6 +1,6 @@
 
 Introduction
-============
+------------
 
 This is mini-dak a partial and lightweight reimplementation of dak
 (Debian Archive Kit) in shell script and with no database
@@ -12,7 +12,7 @@ to the slave archive are supposed to be modifications and porting fixes
 for the new architectures.
 
 Setup
-=====
+-----
 
 Download the sources, and put them for example in '/srv/ftp.foo.org/bin',
 create a user for it (optional), edit archive.conf and run archive-setup.
