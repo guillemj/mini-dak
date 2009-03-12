@@ -1,5 +1,6 @@
 #!/bin/bash
 #
+# Copyright © 1997, 1998 James Troup <james@nocrew.org>
 # Copyright © 2003, 2004, 2005 Guillem Jover <guillem@debian.org>
 #
 # Functions sort_by_priority and sort_by_section ripped from quinn-diff
