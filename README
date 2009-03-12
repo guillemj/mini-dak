@@ -12,6 +12,17 @@ Debian ports, taking all sources from the master archive. Source uploads
 to the slave archive are supposed to be modifications and porting fixes
 for the new architectures.
 
+Releases
+--------
+
+  <http://www.hadrons.org/~guillem/debian/mini-dak/>
+
+Source repository
+-----------------
+
+  <http://git.hadrons.org/?p=debian/mini-dak.git>
+  <git://git.hadrons.org/git/debian/mini-dak.git>
+
 Setup
 -----
 
