@@ -90,7 +90,7 @@ create_repo ()
           path_dir=$dists_dir/$suite/$section/$arch
         else
           path_dir=$dists_dir/$suite/$section/binary-$arch
-	  mkdir -p $dists_dir/$suite/$section/debian-installer/binary-$arch
+          mkdir -p $dists_dir/$suite/$section/debian-installer/binary-$arch
         fi
         mkdir -p $path_dir
         cat > $path_dir/Release <<-HERE

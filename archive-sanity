@@ -20,9 +20,9 @@
 . archive-lib
 
 if [ "$1" = "--fix" ]; then
-FIX=yes
+  FIX=yes
 else
-FIX=no
+  FIX=no
 fi
 
 # Main
