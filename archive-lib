@@ -217,7 +217,7 @@ poolize_arch_name()
   echo $dest_dir
 }
 
-# .changes managment functions
+# .changes management functions
 
 changes_canonic ()
 {
