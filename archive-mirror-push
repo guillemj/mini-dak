@@ -35,4 +35,3 @@ for mirror in $archive_push_mirrors; do
   ssh $mirror &
 done
 echo_time "-> Done."
-

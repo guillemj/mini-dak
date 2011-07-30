@@ -56,4 +56,3 @@ for suite in $suite_list; do
 done
 
 echo_time "-> Done."
-

@@ -62,4 +62,3 @@ log obsolete "-> Generating obsolete dir file list ..."
 cd $obsolete_dir
 ls -lR | gzip -9 -c > ls-lR.gz
 log obsolete "-> Done."
-

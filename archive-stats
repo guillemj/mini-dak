@@ -39,4 +39,3 @@ for arch in $(get_archive_arches); do
 done
 
 log stats "-> Done."
-

@@ -33,4 +33,3 @@ for arch in $(get_archive_arches); do
 done
 
 echo_time "-> Done."
-

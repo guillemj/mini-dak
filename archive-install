@@ -84,4 +84,3 @@ if [ "$INSTALLED" = "yes" ]; then
   ./archive-quinn
   ./archive-stats
 fi
-

@@ -358,4 +358,3 @@ msg_queue ()
     ) | mail -s "$subject" "$recipient"
   fi
 }
-

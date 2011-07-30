@@ -15,4 +15,3 @@ MAILTO=ftpmaster
 
 # Run cruft cleaner once a day at 4:05
 5 4 * * * root cd $BIN; ./archive-clean
-

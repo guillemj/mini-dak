@@ -36,4 +36,3 @@ mkdir -p $snapshot_dir
 cp -al pool $snapshot_dir
 cp -al pool-* $snapshot_dir
 cp -a dists $snapshot_dir
-
