@@ -28,5 +28,7 @@ Setup
 
 Download the sources, and put them for example in '/srv/ftp.foo.org/bin',
 create a user for it (optional), edit archive.conf and run archive-setup.
+Depending on the configured functionality or what parts of mini-dak are
+used, you will need some additional software, listed by: «grep Requires: *».
 Install the cronjob. Enjoy.
 
