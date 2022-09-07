@@ -34,12 +34,12 @@ sort_by_priority()
 
   quinn-diff "$@" > $tmpfile 2> /dev/null
 
-  egrep "\[required\:" $tmpfile | sort
-  egrep "\[important\:" $tmpfile | sort
-  egrep "\[standard\:" $tmpfile | sort
-  egrep "\[optional\:" $tmpfile | sort
-  egrep "\[extra\:" $tmpfile | sort
-  egrep -v "\[extra\:|\[optional\:|\[standard\:|\[important\:|\[required\:" $tmpfile | sort
+  grep -E "\[required\:" $tmpfile | sort
+  grep -E "\[important\:" $tmpfile | sort
+  grep -E "\[standard\:" $tmpfile | sort
+  grep -E "\[optional\:" $tmpfile | sort
+  grep -E "\[extra\:" $tmpfile | sort
+  grep -Ev "\[extra\:|\[optional\:|\[standard\:|\[important\:|\[required\:" $tmpfile | sort
 
   rm -f $tmpfile
 }
@@ -54,13 +54,13 @@ sort_by_section()
   local sections="base admin comm devel doc editors electronics embedded games gnome graphics hamradio interpreters kde libs libdevel mail math misc net news oldlibs otherosfs perl python shells sound tex text utils web x11"
 
   for i in $sections; do
-    egrep "$i\/.*\[required\:" $tmpfile | sort
-    egrep "$i\/.*\[important\:" $tmpfile | sort
-    egrep "$i\/.*\[standard\:" $tmpfile | sort
-    egrep "$i\/.*\[optional\:" $tmpfile | sort
-    egrep "$i\/.*\[extra\:" $tmpfile | sort
+    grep -E "$i\/.*\[required\:" $tmpfile | sort
+    grep -E "$i\/.*\[important\:" $tmpfile | sort
+    grep -E "$i\/.*\[standard\:" $tmpfile | sort
+    grep -E "$i\/.*\[optional\:" $tmpfile | sort
+    grep -E "$i\/.*\[extra\:" $tmpfile | sort
   done
-  egrep -v "\[extra\:|\[optional\:|\[standard\:|\[important\:|\[required\:" $tmpfile | sort
+  grep -Ev "\[extra\:|\[optional\:|\[standard\:|\[important\:|\[required\:" $tmpfile | sort
 
   rm -f $tmpfile
 }
