@@ -58,9 +58,15 @@ fetch_files ()
   formail -xFiles: | cut -d' ' -f6
 }
 
-fetch_md5sums ()
+fetch_checksums ()
 {
-  formail -xFiles: | cut -d' ' -f2,6 | sed -e 's/ /  /'
+  local digest=$1
+
+  if [ $digest = md5 ]; then
+    formail -xFiles: | cut -d' ' -f2,6 | sed -e 's/ /  /'
+  else
+    formail -xChecksums-$digest: | cut -d' ' -f2,4 | sed -e 's/ /  /'
+  fi
 }
 
 fetch_secure_files ()

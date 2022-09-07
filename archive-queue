@@ -88,16 +88,13 @@ verify_dpkg_signature ()
   return 0
 }
 
-verify_md5sums ()
+verify_checksums ()
 {
   local archive_file=$1
-  local md5sum=md5sum.textutils
+  local digest=$2
+  local cmdsum=${digest}sum
 
-  if ! which $md5sum >/dev/null; then
-    md5sum=md5sum
-  fi
-
-  if fetch_md5sums < $archive_file | $md5sum -c >& /dev/null; then
+  if fetch_checksums $digest < $archive_file | $cmdsum -c >& /dev/null; then
     return 0
   else
     return 1
@@ -293,10 +290,12 @@ for changes_file in *.changes; do
 
     cd $unchecked_dir
 
-    if ! verify_md5sums $archive_file; then
-      queue_rejected "wrong-md5sums" $changes_file $archive_file "$signer"
-      continue
-    fi
+    for md in md5 sha1 sha256; do
+      if ! verify_checksums $md $archive_file; then
+        queue_rejected "wrong-${md}sums" $changes_file $archive_file "$signer"
+        continue
+      fi
+    done
 
     if ! verify_suite $archive_file; then
       queue_rejected "wrong-suite" $changes_file $archive_file "$signer"
